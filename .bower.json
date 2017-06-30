@@ -1,0 +1,12 @@
+{
+    "name": "jqjquery-wysibb",
+    "version": "1.5.1",
+    "authors": [
+        "Vadim Dobroskok",
+        "Sascha Haberkorn <coff33cat@gmail.com>"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/gogol-medien/wysibb.git"
+    }
+}

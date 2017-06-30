@@ -1,3 +1,10 @@
+This is a port of [wysibb](https://github.com/wbb/wysibb), a WYSIWYG editor based on jQuery. It is based on the release version [1.5.1](https://github.com/wbb/wysibb/tree/1.5.1) of the software from when it was still published under the MIT license.
+
+
+Original content of README.md :
+
+---
+
 #WysiBB - WYSIWYG BBcode editor
 
 WysiBB is a jQuery visual WYSIWYG editor for BBcode.

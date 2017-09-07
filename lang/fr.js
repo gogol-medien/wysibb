@@ -21,7 +21,7 @@ WBBLANG['fr'] = {
 	spoiler: "Spoiler",
 	fontcolor: "Couleur de la police",
 	fontsize: "Taille de la police",
-	fontfamily: "Famille de polices",
+	fontfamily: "Famille de police",
 	fs_verysmall: "Très petit",
 	fs_small: "Petit",
 	fs_normal: "Normal",
@@ -34,11 +34,11 @@ WBBLANG['fr'] = {
 	modal_link_url: "URL",
 	modal_email_text: "Afficher email",
 	modal_email_url: "Email",
-	modal_link_tab1: "Insérez URL",
+	modal_link_tab1: "Insérer URL",
 	
 	modal_img_title: "Insérer une image",
 	modal_img_tab1: "Insérer URL",
-	modal_img_tab2: "Téléchargez image",
+	modal_img_tab2: "Télécharger image",
 	modal_imgsrc_text: "Entrez l'URL de l'image",
 	modal_img_btn: "Choisir un fichier",
 	add_attach: "Joindre un fichier",
@@ -48,8 +48,8 @@ WBBLANG['fr'] = {
 	cancel: "Annuler",
 	remove: "Effacer",
 	
-	validation_err: "Les données saisies est invalide",
-	error_onupload: "Erreur lors du chargement de fichier",
+	validation_err: "Les données saisies sont invalides",
+	error_onupload: "Erreur lors du chargement du fichier",
 	
 	fileupload_text1: "Déposez le fichier ici",
 	fileupload_text2: "ou",

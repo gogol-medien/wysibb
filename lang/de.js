@@ -30,6 +30,11 @@ WBBLANG['de'] = {
 	smilebox: "Emoticon einf\u00fcgen",
 	video: "Video einbetten",
 	removeFormat:"Formatierung l\u00f6schen",
+		
+	modal_social_title: "Social-Media Link einf\u00fcgen",
+	modal_social_text: "Geben Sie die URL des Social-Media Beitrags ein",
+	
+	
 	
 	modal_link_title: "Link einf\u00fcgen",
 	modal_link_text: "Text",
@@ -37,6 +42,7 @@ WBBLANG['de'] = {
 	modal_email_text: "Display E-Mail",
 	modal_email_url: "E-Mail",
 	modal_link_tab1: "Insert URL",
+	modal_error_url: "Ungultige URL",
 	
 	modal_img_title: "Bild hochladen",
 	modal_img_tab1: "URL eingeben",

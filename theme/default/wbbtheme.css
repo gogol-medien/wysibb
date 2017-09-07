@@ -53,6 +53,11 @@ html{height:100% !important;}
 .wysibb .wysibb-text{
   margin:0 0 0 70px;
 }
+.wbbm-error{
+    color: red;
+    width: 100%;
+    padding: 0px 20px 10px 20px;
+}
 .wysibb .wysibb-toolbar .modeSwitch{
   display:block;
   position:relative;
@@ -502,7 +507,7 @@ html{height:100% !important;}
 }
 
 #wbbmodal  .wbbm-cont{
-  padding:10px 20px;
+  padding:10px 20px 0px 20px;
 }
 #wbbmodal .wbbm-content{
   min-height:50px;

@@ -29,6 +29,7 @@ WBBLANG['de'] = {
 	fs_verybig: "Sehr gro\u00df",
 	smilebox: "Emoticon einf\u00fcgen",
 	video: "Video einbetten",
+	map: "Karte einbetten",
 	removeFormat:"Formatierung l\u00f6schen",
 		
 	modal_social_title: "Social-Media Link einf\u00fcgen",
@@ -52,6 +53,7 @@ WBBLANG['de'] = {
 	add_attach: "Anhang beif\u00fcgen",
 	
 	modal_video_text: "Geben Sie die URL des Videos ein",
+	modal_map_text: "Geben Sie die URL der Karte ein",
 	
 	close: "Schlie\u00dfen",
 	save: "Speichern",

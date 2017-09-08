@@ -31,6 +31,7 @@ WBBLANG['en'] = CURLANG = {
 	fs_verybig: "Very big",
 	smilebox: "Insert emoticon",
 	video: "Insert video link",
+	map: "Insert map link",
 	removeFormat:"Remove Format",
 
 	
@@ -53,6 +54,7 @@ WBBLANG['en'] = CURLANG = {
 	add_attach: "Add Attachment",
 
 	modal_video_text: "Enter the URL of the video",
+	modal_map_text: "Enter the URL of the map",
 	
 	
 	close: "Close",
@@ -450,19 +452,21 @@ wbbdebug=true;
 							else if (url.indexOf("vimeo.com")!=-1) {
 								videoId = url.match(/^http[s]*:\/\/vimeo\.com\/([a-z0-9_-]+)/i);
 								host = "vimeo";
-							}else
+							}else{
 								videoId = null;
-							
+							}
 							
 							if (host != null && videoId != null && videoId[1] != null) {
 								// three differents variable so Wysibb can distinguish which src will be transform into which hostlink (variable name are the keys) 
 								if(host == "youtube"){
 									this.insertAtCursor(this.getCodeByCommand(cmd,{youtubeid:videoId[1]}));
 								}
-								else if(host == "apa")
+								else if(host == "apa"){
 									this.insertAtCursor(this.getCodeByCommand(cmd,{host:videoId[1],apaid:videoId[2]}));
-								else if(host == "vimeo")
+								}
+								else if(host == "vimeo"){
 									this.insertAtCursor(this.getCodeByCommand(cmd,{vimeoid:videoId[1]}));
+								}
 								this.closeModal();
 							}else{
 								this.error(CURLANG.modal_error_url);
@@ -478,6 +482,60 @@ wbbdebug=true;
 						'<iframe src="//www.youtube.com/embed/{YOUTUBEID}" 	width="640" height="360" frameborder="0"></iframe>':'[video]https://www.youtube.com/watch?v={youtubeid}[/video]',
 						'<iframe src="//player.vimeo.com/video/{VIMEOID}" 	width="640" height="360" frameborder="0"></iframe>':'[video]https://vimeo.com/{VIMEOID}[/video]',
 						'<iframe src="//{HOST}/embed/{APAID}" 			width="640" height="360" frameborder="0"></iframe>':'[video]http://{HOST}/embed/{APAID}[/video]'
+					}
+				},
+				map: {
+					title: CURLANG.map,
+					buttonHTML: '<div style="padding:6px;"><span aria-hidden="true" class="fa fa-map-marker fa-lg fa-fw"></span></div>',
+					modal: {
+						title: CURLANG.map,
+						width: "600px",
+						tabs: [
+							{
+								title: CURLANG.map,
+								input: [
+									{param: "SRC",title:CURLANG.modal_map_text}
+								]
+							}
+						],
+						// maps link submited, parse the url and  to an iframe or BBcode
+						onSubmit: function(cmd,opt,queryState) {
+							
+							var url = this.$modal.find('input[name="SRC"]').val();
+							if (url) {
+								url = url.replace(/^\s+/,"").replace(/\s+$/,"");
+							}
+							var mapLink = null;
+							var host = null;
+							if (url.indexOf("google.com/maps")!=-1){
+								if(url.indexOf("iframe")!=-1){
+									url = url.match(/src="(.*?)"/i)[1];
+								}
+								mapLink = url.match(/(^http[s]*:\/\/www\.google\.com\/maps\/.+)/i);
+							}else if (url.indexOf("openstreetmap.org")!=-1) {
+								if(url.indexOf("iframe")!=-1){
+									url = url.match(/src="(.*?)"/i)[1];
+								}
+								mapLink = url.match(/(^http[s]*:\/\/www\.openstreetmap\.org\/export\/embed.html.+)/i);
+//								mapLink = url.match(/(^http[s]*:\/\/www\.openstreetmap\.org\/.+)/i);
+							}else{
+								mapLink = null;
+							}
+							
+							if (mapLink != null && mapLink[1] != null) {								
+								this.insertAtCursor(this.getCodeByCommand(cmd,{maplink:mapLink[1]}));
+								this.closeModal();
+							}else{
+								this.error(CURLANG.modal_error_url);
+							}
+							
+							this.updateUI();
+							return false;
+						},
+					},
+					transform: 
+					{
+						'<div class="callout small text-center map" onclick="window.open(\'{MAPLINK}\');"><span class="fa-stack fa-lg"><i class="fa fa-square-o fa-stack-2x"></i><i class="fa fa-map fa-stack-1x"></i></span></div>':'[map]{MAPLINK}[/map]',
 					}
 				},
 

@@ -509,7 +509,6 @@ wbbdebug=false;
 							}
 							var mapLink = null;
 							var host = null;
-							if (url.indexOf("google.com/maps")!=-1){
 							if (url.indexOf("google.com/maps")!=-1 && url.indexOf("google.com/maps/d/edit")==-1){
 								if(url.indexOf("iframe")!=-1){
 									url = url.match(/src="(.*?)"/i)[1];

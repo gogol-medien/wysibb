@@ -56,7 +56,16 @@ html{height:100% !important;}
 .wbbm-error{
     color: red;
     width: 100%;
+	text-align: center;
     padding: 0px 20px 10px 20px;
+}
+.wbbm-info{
+    width: 100%;
+    margin-top: -5px;
+    padding: 0px 20px 0px 20px;
+}
+.wbbm-info > span, .wbbm-info > span > ul{
+    margin-bottom: 5px;
 }
 .wysibb .wysibb-toolbar .modeSwitch{
   display:block;

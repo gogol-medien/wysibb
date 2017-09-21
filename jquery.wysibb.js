@@ -55,6 +55,7 @@ WBBLANG['en'] = CURLANG = {
 
 	modal_video_text: "Enter the URL of the video",
 	modal_map_text: "Enter the URL of the map",
+	modal_map_infoText: "<span>Please use the Embed map code, not the share link, in order to use the map integration.<br>Supported platforms:</span><span><ul><li>Google Maps</li><li>OpenStreetmaps</li></ul></span>",
 	
 	
 	close: "Close",
@@ -84,7 +85,7 @@ WBBLANG['en'] = CURLANG = {
 	sm8: "Pain",
 	sm9: "Sick"
 };
-wbbdebug=true;
+wbbdebug=false;
 (function($) {
 	'use strict';
 	$.wysibb = function(txtArea,settings) {
@@ -495,7 +496,8 @@ wbbdebug=true;
 								title: CURLANG.map,
 								input: [
 									{param: "SRC",title:CURLANG.modal_map_text}
-								]
+								],
+								infoText: CURLANG.modal_map_infoText,
 							}
 						],
 						// maps link submited, parse the url and  to an iframe or BBcode
@@ -508,6 +510,7 @@ wbbdebug=true;
 							var mapLink = null;
 							var host = null;
 							if (url.indexOf("google.com/maps")!=-1){
+							if (url.indexOf("google.com/maps")!=-1 && url.indexOf("google.com/maps/d/edit")==-1){
 								if(url.indexOf("iframe")!=-1){
 									url = url.match(/src="(.*?)"/i)[1];
 								}
@@ -517,7 +520,7 @@ wbbdebug=true;
 									url = url.match(/src="(.*?)"/i)[1];
 								}
 								mapLink = url.match(/(^http[s]*:\/\/www\.openstreetmap\.org\/export\/embed.html.+)/i);
-//								mapLink = url.match(/(^http[s]*:\/\/www\.openstreetmap\.org\/.+)/i);
+
 							}else{
 								mapLink = null;
 							}
@@ -1374,7 +1377,7 @@ wbbdebug=true;
 			if (this.$modal.size()==0) {
 				$.log("Init modal");
 				this.$modal = $('<div>').attr("id","wbbmodal").prependTo(document.body)
-					.html('<div class="wbbm"><div class="wbbm-title"><span class="wbbm-title-text"></span><span class="wbbclose" title="'+CURLANG.close+'">×</span></div><div class="wbbm-content"></div><div class="wbbm-error"></div><div class="wbbm-bottom"><button id="wbbm-submit" class="wbb-button">'+CURLANG.save+'</button><button id="wbbm-cancel" class="wbb-cancel-button">'+CURLANG.cancel+'</button><button id="wbbm-remove" class="wbb-remove-button">'+CURLANG.remove+'</button></div></div>').hide();
+					.html('<div class="wbbm"><div class="wbbm-title"><span class="wbbm-title-text"></span><span class="wbbclose" title="'+CURLANG.close+'">×</span></div><div class="wbbm-content"></div><div class="wbbm-info"></div><div class="wbbm-error"></div><div class="wbbm-bottom"><button id="wbbm-submit" class="wbb-button">'+CURLANG.save+'</button><button id="wbbm-cancel" class="wbb-cancel-button">'+CURLANG.cancel+'</button><button id="wbbm-remove" class="wbb-remove-button">'+CURLANG.remove+'</button></div></div>').hide();
 				this.$modal.find('#wbbm-cancel,.wbbclose').click($.proxy(this.closeModal,this));
 				this.$modal.bind('click',$.proxy(function(e) {
 					if ($(e.target).parents(".wbbm").size()==0) {
@@ -2741,6 +2744,11 @@ wbbdebug=true;
 				if (r.html) {
 					$c.html(this.strf(r.html,this.options));
 				}else{
+					if(typeof(r.infoText)!="undefined" && r.infoText != ''){
+						$wbbm.find('.wbbm-info').html(r.infoText);
+					}else{
+						$wbbm.find('.wbbm-info').html('');
+					}
 					$.each(r.input,$.proxy(function(j,inp) {
 						inp["value"]=queryState[inp.param.toLowerCase()];
 						if (inp.param.toLowerCase()=="seltext" && (!inp["value"] || inp["value"]=="")) {

@@ -54,6 +54,7 @@ WBBLANG['de'] = {
 	
 	modal_video_text: "Geben Sie die URL des Videos ein",
 	modal_map_text: "Geben Sie die URL der Karte ein",
+	modal_map_infoText: "<span>Zum Einbinden verwenden Sie bitte den Einbettcode und nicht die Web-URL.<br>Unterstützte Plattformen:</span><span><ul><li>Google Maps</li><li>OpenStreetmaps</li></ul></span>",
 	
 	close: "Schlie\u00dfen",
 	save: "Speichern",

@@ -33,8 +33,9 @@ WBBLANG['de'] = {
 	removeFormat:"Formatierung l\u00f6schen",
 		
 	modal_social_title: "Social-Media Link einf\u00fcgen",
-	modal_social_text: "Geben Sie die URL des Social-Media Beitrags ein",
-	
+	modal_social_text: "Zum Einbinden verwenden Sie bitte die Web-URL und nicht den Einbettcode.",
+	modal_social_infoTextUpperInput: "Es können nur einzelne Beiträge der jeweiligen Plattformen eingebunden werden, nicht jedoch Übersichtsseiten.",
+	modal_social_infoTextUnderInput: "<span>Unterstützte Plattformen:</span><span><ul><li>Facebook</li><li>Instagram</li><li>Twitter</li></ul></span>",
 	
 	
 	modal_link_title: "Link einf\u00fcgen",
@@ -53,8 +54,13 @@ WBBLANG['de'] = {
 	add_attach: "Anhang beif\u00fcgen",
 	
 	modal_video_text: "Geben Sie die URL des Videos ein",
+	modal_video_infoTextUpperInput: "Es können nur einzelne Videos der jeweiligen Plattformen eingebunden werden, nicht jedoch Playlists, Streams oder Übersichtsseiten.",
+	modal_video_infoTextUnderInput: "<span>Zum Einbinden verwenden Sie bitte die Web-URL und nicht den Einbettungscode.<br>Unterstützte Plattformen:</span><span><ul><li>Youtube</li><li>Vimeo</li></ul></span>",
+	
 	modal_map_text: "Geben Sie die URL der Karte ein",
-	modal_map_infoText: "<span>Zum Einbinden verwenden Sie bitte den Einbettcode und nicht die Web-URL.<br>Unterstützte Plattformen:</span><span><ul><li>Google Maps</li><li>OpenStreetmaps</li></ul></span>",
+	modal_map_infoTextUpperInput: "",
+	modal_map_infoTextUnderInput: "<span>Zum Einbinden verwenden Sie bitte den Einbettcode und nicht die Web-URL.<br>Unterstützte Plattformen:</span><span><ul><li>Google Maps</li><li>OpenStreetmaps</li></ul></span>",
+
 	
 	close: "Schlie\u00dfen",
 	save: "Speichern",

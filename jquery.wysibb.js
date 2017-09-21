@@ -36,8 +36,10 @@ WBBLANG['en'] = CURLANG = {
 
 	
 	modal_social_title: "Insert social media link",
-	modal_social_text: "Enter the social media link",
-
+	modal_social_text: "Please use the Embed map code, not the share link.",
+	modal_social_infoTextUpperInput: "Only the post from the platforms can be integrated. Overiews are not supported.",
+	modal_social_infoTextUnderInput: "<span>Supported platforms:</span><span><ul><li>Facebook</li><li>Instagram</li><li>Twitter</li></ul></span>",
+	
 	modal_link_title: "Insert link",
 	modal_link_text: "Display text",
 	modal_link_url: "URL",
@@ -54,8 +56,12 @@ WBBLANG['en'] = CURLANG = {
 	add_attach: "Add Attachment",
 
 	modal_video_text: "Enter the URL of the video",
+	modal_video_infoTextUpperInput: "Only the videos from the platforms can be integrated. Playlists, streams or overviews are not supported",
+	modal_video_infoTextUnderInput: "<span>Please use the Embed map code, not the share link.<br>Supported platforms:</span><span><ul><li>Youtube</li><li>Vimeo</li></ul></span>",
+	
 	modal_map_text: "Enter the URL of the map",
-	modal_map_infoText: "<span>Please use the Embed map code, not the share link, in order to use the map integration.<br>Supported platforms:</span><span><ul><li>Google Maps</li><li>OpenStreetmaps</li></ul></span>",
+	modal_map_infoTextUpperInput: "",
+	modal_map_infoTextUnderInput: "<span>Please use the Embed map code, not the share link, in order to use the map integration.<br>Supported platforms:</span><span><ul><li>Google Maps</li><li>OpenStreetmaps</li></ul></span>",
 	
 	
 	close: "Close",
@@ -358,7 +364,12 @@ wbbdebug=false;
 							{
 								title: CURLANG.modal_social_title,
 								input: [
-									{param: "LINK",title:CURLANG.modal_social_text}
+									{
+										param: "LINK",
+										title:CURLANG.modal_social_text,
+										upperText: CURLANG.modal_social_infoTextUpperInput, 
+										underText: CURLANG.modal_social_infoTextUnderInput,
+									}
 								]
 							}
 						],
@@ -427,7 +438,12 @@ wbbdebug=false;
 							{
 								title: CURLANG.video,
 								input: [
-									{param: "SRC",title:CURLANG.modal_video_text}
+									{
+										param: "SRC",
+										title:CURLANG.modal_video_text,
+										upperText: CURLANG.modal_video_infoTextUpperInput, 
+										underText: CURLANG.modal_video_infoTextUnderInput,
+									}
 								]
 							}
 						],
@@ -495,9 +511,12 @@ wbbdebug=false;
 							{
 								title: CURLANG.map,
 								input: [
-									{param: "SRC",title:CURLANG.modal_map_text}
+									{	param: "SRC",
+										title: CURLANG.modal_map_text, 
+										upperText: CURLANG.modal_map_infoTextUpperInput, 
+										underText: CURLANG.modal_map_infoTextUnderInput,
+									}
 								],
-								infoText: CURLANG.modal_map_infoText,
 							}
 						],
 						// maps link submited, parse the url and  to an iframe or BBcode
@@ -1376,7 +1395,7 @@ wbbdebug=false;
 			if (this.$modal.size()==0) {
 				$.log("Init modal");
 				this.$modal = $('<div>').attr("id","wbbmodal").prependTo(document.body)
-					.html('<div class="wbbm"><div class="wbbm-title"><span class="wbbm-title-text"></span><span class="wbbclose" title="'+CURLANG.close+'">×</span></div><div class="wbbm-content"></div><div class="wbbm-info"></div><div class="wbbm-error"></div><div class="wbbm-bottom"><button id="wbbm-submit" class="wbb-button">'+CURLANG.save+'</button><button id="wbbm-cancel" class="wbb-cancel-button">'+CURLANG.cancel+'</button><button id="wbbm-remove" class="wbb-remove-button">'+CURLANG.remove+'</button></div></div>').hide();
+					.html('<div class="wbbm"><div class="wbbm-title"><span class="wbbm-title-text"></span><span class="wbbclose" title="'+CURLANG.close+'">×</span></div><div class="wbbm-content"></div><div class="wbbm-error"></div><div class="wbbm-bottom"><button id="wbbm-submit" class="wbb-button">'+CURLANG.save+'</button><button id="wbbm-cancel" class="wbb-cancel-button">'+CURLANG.cancel+'</button><button id="wbbm-remove" class="wbb-remove-button">'+CURLANG.remove+'</button></div></div>').hide();
 				this.$modal.find('#wbbm-cancel,.wbbclose').click($.proxy(this.closeModal,this));
 				this.$modal.bind('click',$.proxy(function(e) {
 					if ($(e.target).parents(".wbbm").size()==0) {
@@ -2743,11 +2762,6 @@ wbbdebug=false;
 				if (r.html) {
 					$c.html(this.strf(r.html,this.options));
 				}else{
-					if(typeof(r.infoText)!="undefined" && r.infoText != ''){
-						$wbbm.find('.wbbm-info').html(r.infoText);
-					}else{
-						$wbbm.find('.wbbm-info').html('');
-					}
 					$.each(r.input,$.proxy(function(j,inp) {
 						inp["value"]=queryState[inp.param.toLowerCase()];
 						if (inp.param.toLowerCase()=="seltext" && (!inp["value"] || inp["value"]=="")) {
@@ -2758,13 +2772,11 @@ wbbdebug=false;
 						}
 						if (inp.type && inp.type=="div") {
 							//div input, support wysiwyg input
-							$c.append(this.strf('<div class="wbbm-inp-row"><label>{title}</label><div class="inp-text div-modal-text" contenteditable="true" name="{param}">{value}</div></div>',inp));
+							$c.append(this.strf('<div class="wbbm-inp-row"><label>{title}</label><div class="wbbm-inp-upperText">{upperText}</div><div class="inp-text div-modal-text" contenteditable="true" name="{param}">{value}</div></div><div class="wbbm-inp-underText">{underText}</div>',inp));
 						}else{
 							//default input
-							$c.append(this.strf('<div class="wbbm-inp-row"><label>{title}</label><input class="inp-text modal-text" type="text" name="{param}" value="{value}"/></div>',inp));
+							$c.append(this.strf('<div class="wbbm-inp-row"><label>{title}</label><div class="wbbm-inp-upperText">{upperText}</div><input class="inp-text modal-text" type="text" name="{param}" value="{value}"/></div><div class="wbbm-inp-underText">{underText}</div>',inp));
 						}
-
-
 					},this));
 				}
 			},this));

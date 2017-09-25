@@ -53,6 +53,14 @@ html{height:100% !important;}
 .wysibb .wysibb-text{
   margin:0 0 0 70px;
 }
+.wbbm-info{
+    width: 100%;
+    margin-top: -5px;
+    padding: 0px 20px 0px 20px;
+}
+.wbbm-info > span, .wbbm-info > span > ul{
+    margin-bottom: 5px;
+}
 .wysibb .wysibb-toolbar .modeSwitch{
   display:block;
   position:relative;
@@ -502,7 +510,7 @@ html{height:100% !important;}
 }
 
 #wbbmodal  .wbbm-cont{
-  padding:10px 20px;
+  padding:10px 20px 0px 20px;
 }
 #wbbmodal .wbbm-content{
   min-height:50px;
@@ -514,8 +522,15 @@ html{height:100% !important;}
   padding:2px 5px;
   line-height: 28px;
   max-height:100px;
+  min-height: 30px;
   overflow:auto;
   font-size:14px;
+}
+#wbbmodal .wbbm-error{
+    color: red;
+    width: 100%;
+	text-align: center;
+    padding: 0px 20px 10px 20px;
 }
 #wbbmodal  .wbbm-bottom{
 
@@ -571,6 +586,12 @@ html{height:100% !important;}
 
 #wbbmodal .wbbm-inp-row{
   margin-bottom:15px;
+}
+#wbbmodal .wbbm-inp-upperText{
+  margin-bottom:5px;  
+}
+#wbbmodal .wbbm-inp-underText{
+    margin-top: -10px;
 }
 #wbbmodal .wbbm-inp-row label{
   display:block;

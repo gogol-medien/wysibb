@@ -30,16 +30,24 @@ WBBLANG['en'] = CURLANG = {
 	fs_big: "Big",
 	fs_verybig: "Very big",
 	smilebox: "Insert emoticon",
-	video: "Insert YouTube",
+	video: "Insert video link",
+	map: "Insert map link",
 	removeFormat:"Remove Format",
 
+	
+	modal_social_title: "Insert social media link",
+	modal_social_text: "Please use the Embed map code, not the share link.",
+	modal_social_infoTextUpperInput: "Only the post from the platforms can be integrated. Overiews are not supported.",
+	modal_social_infoTextUnderInput: "<span>Supported platforms:</span><span><ul><li>Facebook</li><li>Instagram</li><li>Twitter</li></ul></span>",
+	
 	modal_link_title: "Insert link",
 	modal_link_text: "Display text",
 	modal_link_url: "URL",
 	modal_email_text: "Display email",
 	modal_email_url: "Email",
 	modal_link_tab1: "Insert URL",
-
+	modal_error_url: "Invalid URL",
+	
 	modal_img_title: "Insert image",
 	modal_img_tab1: "Insert URL",
 	modal_img_tab2: "Upload image",
@@ -48,7 +56,14 @@ WBBLANG['en'] = CURLANG = {
 	add_attach: "Add Attachment",
 
 	modal_video_text: "Enter the URL of the video",
-
+	modal_video_infoTextUpperInput: "Only the videos from the platforms can be integrated. Playlists, streams or overviews are not supported",
+	modal_video_infoTextUnderInput: "<span>Please use the Embed map code, not the share link.<br>Supported platforms:</span><span><ul><li>Youtube</li><li>Vimeo</li></ul></span>",
+	
+	modal_map_text: "Enter the embed code of the map",
+	modal_map_infoTextUpperInput: "",
+	modal_map_infoTextUnderInput: "<span>Please use the embed map code, not the share link, in order to use the map integration.<br>Supported platforms:</span><span><ul><li>Google Maps</li><li>OpenStreetmaps</li></ul></span>",
+	
+	
 	close: "Close",
 	save: "Save",
 	cancel: "Cancel",
@@ -76,7 +91,7 @@ WBBLANG['en'] = CURLANG = {
 	sm8: "Pain",
 	sm9: "Sick"
 };
-wbbdebug=true;
+wbbdebug=false;
 (function($) {
 	'use strict';
 	$.wysibb = function(txtArea,settings) {
@@ -339,6 +354,80 @@ wbbdebug=true;
 						'<p style="text-align:center">{SELTEXT}</p>': '[center]{SELTEXT}[/center]'
 					}
 				},
+				socialembed: {
+					title: CURLANG.modal_social_title,
+					buttonHTML: '<div style="padding:6px;"><span aria-hidden="true" class="fa fa-facebook fa-lg fa-fw"></span></div>',
+					modal: {
+						title: CURLANG.modal_social_title,
+						width: "600px",
+						tabs: [
+							{
+								title: CURLANG.modal_social_title,
+								input: [
+									{
+										param: "LINK",
+										title:CURLANG.modal_social_text,
+										upperText: CURLANG.modal_social_infoTextUpperInput, 
+										underText: CURLANG.modal_social_infoTextUnderInput,
+									}
+								]
+							}
+						],
+						// Social media link submited, verify which social media is use and parse the url
+						onSubmit: function(cmd,opt,queryState) {
+							var url = this.$modal.find('input[name="LINK"]').val();
+							if (url) {
+								url = url.replace(/^\s+/,"").replace(/\s+$/,"");
+							}
+							// There is a different variable per social media so Wysibb know which transform translation to use. (variable name are keys)
+							var link = null;
+							if (url.indexOf("facebook")!=-1) {
+								link = url.match(/^(http[s]*:\/\/.+facebook\.com\/.+)/i);
+								if(link != null){
+									this.insertAtCursor(this.getCodeByCommand(cmd,{facebookLink:link[1]}));
+								}
+							}else if (url.indexOf("instagram")!=-1) {
+								link = url.match(/^(http[s]*:\/\/.*instagram\.com\/.+)/i);
+								if(link != null){
+									this.insertAtCursor(this.getCodeByCommand(cmd,{instagramLink:link[1]}));
+								}
+							}if (url.indexOf("twitter")!=-1) {
+								link = url.match(/^(http[s]*:\/\/.*twitter\.com\/.+)/i);
+								if(link != null){
+									this.insertAtCursor(this.getCodeByCommand(cmd,{twitterLink:link[1]}));
+								}
+							}if (url.indexOf("tumblr")!=-1) {
+								link = url.match(/^(http[s]*:\/\/.*tumblr\.com\/.+)/i);
+								if(link != null){
+									this.insertAtCursor(this.getCodeByCommand(cmd,{tumblrLink:link[1]}));
+								}
+							}if (url.indexOf("plus.google")!=-1) {
+								link = url.match(/^(http[s]*:\/\/.*plus\.google\.com\/.+)/i);
+								if(link != null){
+									this.insertAtCursor(this.getCodeByCommand(cmd,{googleplusLink:link[1]}));
+								}
+							}
+								
+
+							if(link == null){
+								this.error(CURLANG.modal_error_url);								
+							}else{
+								this.closeModal();
+							}
+							
+							this.updateUI();
+							return false;
+						}
+					},
+					transform:
+					{
+						'<div class="callout small text-center facebook" onclick="window.open(\'{FACEBOOKLINK}\');"><span class="fa-stack fa-lg"><i class="fa fa-square-o fa-stack-2x"></i><i class="fa fa-facebook fa-stack-1x"></i></span></div>':'[facebook]{FACEBOOKLINK}[/facebook]',
+						'<div class="callout small text-center instagram" onclick="window.open(\'{INSTAGRAMLINK}\');"><span class="fa-stack fa-lg"><i class="fa fa-square-o fa-stack-2x"></i><i class="fa fa-instagram fa-stack-1x"></i></span></div>':'[instagram]{INSTAGRAMLINK}[/instagram]',
+						'<div class="callout small text-center twitter" onclick="window.open(\'{TWITTERLINK}\');"><span class="fa-stack fa-lg"><i class="fa fa-square-o fa-stack-2x"></i><i class="fa fa-twitter fa-stack-1x"></i></span></div>':'[twitter]{TWITTERLINK}[/twitter]',
+						'<div class="callout small text-center tumblr" onclick="window.open(\'{TUMBLRLINK}\');"><span class="fa-stack fa-lg"><i class="fa fa-square-o fa-stack-2x"></i><i class="fa fa-tumblr fa-stack-1x"></i></span></div>':'[tumblr]{TUMBLRLINK}[/tumblr]',
+						'<div class="callout small text-center googleplus" onclick="window.open(\'{GOOGLEPLUSLINK}\');"><span class="fa-stack fa-lg"><i class="fa fa-square-o fa-stack-2x"></i><i class="fa fa-google-plus fa-stack-1x"></i></span></div>':'[googleplus]{GOOGLEPLUSLINK}[/googleplus]',
+					}
+				},
 				video: {
 					title: CURLANG.video,
 					buttonHTML: '<span class="fonticon ve-tlb-video1">\uE008</span>',
@@ -349,32 +438,125 @@ wbbdebug=true;
 							{
 								title: CURLANG.video,
 								input: [
-									{param: "SRC",title:CURLANG.modal_video_text}
+									{
+										param: "SRC",
+										title:CURLANG.modal_video_text,
+										upperText: CURLANG.modal_video_infoTextUpperInput, 
+										underText: CURLANG.modal_video_infoTextUnderInput,
+									}
 								]
 							}
 						],
+						// video link submited, parse the src_url and video_id to an iframe or BBcode
 						onSubmit: function(cmd,opt,queryState) {
+							
 							var url = this.$modal.find('input[name="SRC"]').val();
 							if (url) {
 								url = url.replace(/^\s+/,"").replace(/\s+$/,"");
 							}
-							var a;
+							var videoId;
+							var host = null;
 							if (url.indexOf("youtu.be")!=-1) {
-								a = url.match(/^http[s]*:\/\/youtu\.be\/([a-z0-9_-]+)/i);
+								videoId = url.match(/^http[s]*:\/\/youtu\.be\/([a-z0-9_-]+)/i);
+								host = "youtube";
+							}else if (url.indexOf("youtube")!=-1) {
+								videoId = url.match(/^http[s]*:\/\/www\.youtube\.com\/watch\?.*?v=([a-z0-9_-]+)/i);
+								host = "youtube";
+							}else if (url.indexOf("apa.at/embed")!=-1) {
+								videoId = url.match(/^http[s]*:\/\/(uvp.+apa\.at)\/embed\/([a-z0-9_-]+)/i);
+								host = "apa";
+							}
+							else if (url.indexOf("vimeo.com")!=-1) {
+								videoId = url.match(/^http[s]*:\/\/vimeo\.com\/([a-z0-9_-]+)/i);
+								host = "vimeo";
 							}else{
-								a = url.match(/^http[s]*:\/\/www\.youtube\.com\/watch\?.*?v=([a-z0-9_-]+)/i);
+								videoId = null;
 							}
-							if (a && a.length==2) {
-								var code = a[1];
-								this.insertAtCursor(this.getCodeByCommand(cmd,{src:code}));
+							
+							if (host != null && videoId != null && videoId[1] != null) {
+								// three differents variable so Wysibb can distinguish which src will be transform into which hostlink (variable name are the keys) 
+								if(host == "youtube"){
+									this.insertAtCursor(this.getCodeByCommand(cmd,{youtubeid:videoId[1]}));
+								}
+								else if(host == "apa"){
+									this.insertAtCursor(this.getCodeByCommand(cmd,{host:videoId[1],apaid:videoId[2]}));
+								}
+								else if(host == "vimeo"){
+									this.insertAtCursor(this.getCodeByCommand(cmd,{vimeoid:videoId[1]}));
+								}
+								this.closeModal();
+							}else{
+								this.error(CURLANG.modal_error_url);
 							}
-							this.closeModal();
+							
+							
 							this.updateUI();
 							return false;
-						}
+						},
 					},
-					transform: {
-						'<iframe src="//www.youtube.com/embed/{SRC}" width="640" height="480" frameborder="0"></iframe>':'[video]{SRC}[/video]'
+					transform: 
+					{
+						'<iframe src="//www.youtube.com/embed/{YOUTUBEID}" 	width="640" height="360" frameborder="0"></iframe>':'[video]https://www.youtube.com/watch?v={youtubeid}[/video]',
+						'<iframe src="//player.vimeo.com/video/{VIMEOID}" 	width="640" height="360" frameborder="0"></iframe>':'[video]https://vimeo.com/{VIMEOID}[/video]',
+						'<iframe src="//{HOST}/embed/{APAID}" 			width="640" height="360" frameborder="0"></iframe>':'[video]http://{HOST}/embed/{APAID}[/video]'
+					}
+				},
+				map: {
+					title: CURLANG.map,
+					buttonHTML: '<div style="padding:6px;"><span aria-hidden="true" class="fa fa-map-marker fa-lg fa-fw"></span></div>',
+					modal: {
+						title: CURLANG.map,
+						width: "600px",
+						tabs: [
+							{
+								title: CURLANG.map,
+								input: [
+									{	param: "SRC",
+										title: CURLANG.modal_map_text, 
+										upperText: CURLANG.modal_map_infoTextUpperInput, 
+										underText: CURLANG.modal_map_infoTextUnderInput,
+									}
+								],
+							}
+						],
+						// maps link submited, parse the url and  to an iframe or BBcode
+						onSubmit: function(cmd,opt,queryState) {
+							
+							var url = this.$modal.find('input[name="SRC"]').val();
+							if (url) {
+								url = url.replace(/^\s+/,"").replace(/\s+$/,"");
+							}
+							var mapLink = null;
+							var host = null;
+							if (url.indexOf("google.com/maps")!=-1 && url.indexOf("google.com/maps/d/edit")==-1){
+								if(url.indexOf("iframe")!=-1){
+									url = url.match(/src="(.*?)"/i)[1];
+								}
+								mapLink = url.match(/(^http[s]*:\/\/www\.google\.com\/maps\/.+)/i);
+							}else if (url.indexOf("openstreetmap.org")!=-1) {
+								if(url.indexOf("iframe")!=-1){
+									url = url.match(/src="(.*?)"/i)[1];
+								}
+								mapLink = url.match(/(^http[s]*:\/\/www\.openstreetmap\.org\/export\/embed.html.+)/i);
+
+							}else{
+								mapLink = null;
+							}
+							
+							if (mapLink != null && mapLink[1] != null) {								
+								this.insertAtCursor(this.getCodeByCommand(cmd,{maplink:mapLink[1]}));
+								this.closeModal();
+							}else{
+								this.error(CURLANG.modal_error_url);
+							}
+							
+							this.updateUI();
+							return false;
+						},
+					},
+					transform: 
+					{
+						'<div class="callout small text-center map" onclick="window.open(\'{MAPLINK}\');"><span class="fa-stack fa-lg"><i class="fa fa-square-o fa-stack-2x"></i><i class="fa fa-map fa-stack-1x"></i></span></div>':'[map]{MAPLINK}[/map]',
 					}
 				},
 
@@ -497,7 +679,7 @@ wbbdebug=true;
 			if (this.options.onlyBBmode===true) {this.options.bbmode=true;}
 			//create array of controls, for queryState
 			this.controllers = [];
-
+			
 			//convert button string to array
 			this.options.buttons = this.options.buttons.toLowerCase();
 			this.options.buttons = this.options.buttons.split(",");
@@ -834,38 +1016,36 @@ wbbdebug=true;
 
 
 				//clear html on paste from external editors
-				this.$body.bind('keydown', $.proxy(function(e) {
-					if ((e.which == 86 && (e.ctrlKey==true || e.metaKey==true)) || (e.which == 45 && (e.shiftKey==true || e.metaKey==true))) {
-						if (!this.$pasteBlock) {
-							this.saveRange();
-							this.$pasteBlock = $(this.elFromString('<div style="opacity:0;" contenteditable="true">\uFEFF</div>'));
+				this.$body.bind('paste', $.proxy(function(e) {
+					if (!this.$pasteBlock) {
+						this.saveRange();
+						this.$pasteBlock = $(this.elFromString('<div style="opacity:0;" contenteditable="true">\uFEFF</div>'));
 
-							this.$pasteBlock.appendTo(this.body);
-							//if (!$.support.search?type=2) {this.$pasteBlock.focus();} //IE 7,8 FIX
-								setTimeout($.proxy(function() {
-									this.clearPaste(this.$pasteBlock);
-									var rdata = '<span>'+this.$pasteBlock.html()+'</span>';
-									this.$body.attr("contentEditable","true");
-									this.$pasteBlock.blur().remove();
-									this.body.focus();
+						this.$pasteBlock.appendTo(this.body);
+						//if (!$.support.search?type=2) {this.$pasteBlock.focus();} //IE 7,8 FIX
+							setTimeout($.proxy(function() {
+								this.clearPaste(this.$pasteBlock);
+								var rdata = '<span>'+this.$pasteBlock[0].innerText+'</span>';// only raw text, no html | Mantis 7885
+								this.$body.attr("contentEditable","true");
+								this.$pasteBlock.blur().remove();
+								this.body.focus();
 
-									if (this.cleartext) {
-										$.log("Check if paste to clearText Block");
-										if (this.isInClearTextBlock()) {
-											rdata = this.toBB(rdata).replace(/\n/g,"<br/>").replace(/\s{3}/g,'<span class="wbbtab"></span>');
-										}
+								if (this.cleartext) {
+									$.log("Check if paste to clearText Block");
+									if (this.isInClearTextBlock()) {
+										rdata = this.toBB(rdata).replace(/\n/g,"<br/>").replace(/\s{3}/g,'<span class="wbbtab"></span>');
 									}
-									rdata = rdata.replace(/\t/g,'<span class="wbbtab"></span>');
-									this.selectRange(this.lastRange);
-									this.insertAtCursor(rdata,false);
-									this.lastRange=false;
-									this.$pasteBlock=false;
 								}
-								,this), 1);
-							this.selectNode(this.$pasteBlock[0]);
-						}
-						return true;
+								rdata = rdata.replace(/\t/g,'<span class="wbbtab"></span>');
+								this.selectRange(this.lastRange);
+								this.insertAtCursor(rdata,false);
+								this.lastRange=false;
+								this.$pasteBlock=false;
+							}
+							,this), 1);
+						this.selectNode(this.$pasteBlock[0]);
 					}
+					return true;
 				},this));
 
 				//insert BR on press enter
@@ -1215,8 +1395,7 @@ wbbdebug=true;
 			if (this.$modal.size()==0) {
 				$.log("Init modal");
 				this.$modal = $('<div>').attr("id","wbbmodal").prependTo(document.body)
-					.html('<div class="wbbm"><div class="wbbm-title"><span class="wbbm-title-text"></span><span class="wbbclose" title="'+CURLANG.close+'">×</span></div><div class="wbbm-content"></div><div class="wbbm-bottom"><button id="wbbm-submit" class="wbb-button">'+CURLANG.save+'</button><button id="wbbm-cancel" class="wbb-cancel-button">'+CURLANG.cancel+'</button><button id="wbbm-remove" class="wbb-remove-button">'+CURLANG.remove+'</button></div></div>').hide();
-
+					.html('<div class="wbbm"><div class="wbbm-title"><span class="wbbm-title-text"></span><span class="wbbclose" title="'+CURLANG.close+'">×</span></div><div class="wbbm-content"></div><div class="wbbm-error"></div><div class="wbbm-bottom"><button id="wbbm-submit" class="wbb-button">'+CURLANG.save+'</button><button id="wbbm-cancel" class="wbb-cancel-button">'+CURLANG.cancel+'</button><button id="wbbm-remove" class="wbb-remove-button">'+CURLANG.remove+'</button></div></div>').hide();
 				this.$modal.find('#wbbm-cancel,.wbbclose').click($.proxy(this.closeModal,this));
 				this.$modal.bind('click',$.proxy(function(e) {
 					if ($(e.target).parents(".wbbm").size()==0) {
@@ -1226,6 +1405,10 @@ wbbdebug=true;
 
 				$(document).bind("keydown",$.proxy(this.escModal,this)); //ESC key close modal
 			}
+		},
+		error: function (err){
+			this.$modal.find('.wbbm-error').html(err);
+			this.$modal.find('.wbbm-error').show();
 		},
 		initHotkeys: function() {
 			$.log("initHotkeys");
@@ -2014,7 +2197,7 @@ wbbdebug=true;
 									$el=null;
 									break;
 								}else{
-									if (keepElement && !$el.attr("notkeep")) {
+									if (keepElement && !$el.attr("notkeep") && !$el.is("iframe")) {
 										if ($el.is("table,tr,td")) {
 											bbcode = this.fixTableTransform(bbcode);
 											outbb+=this.toBB($('<span>').html(bbcode));
@@ -2026,6 +2209,7 @@ wbbdebug=true;
 									}else{
 										if ($el.is("iframe")) {
 											outbb+=bbcode;
+											$el = null; // Mikael | 05.09.17 | bug when transforming iframe to BBcode. Used to duplicate BBcode
 										}else{
 											$el.empty().html(bbcode);
 											outbb+=this.toBB($el);
@@ -2042,7 +2226,6 @@ wbbdebug=true;
 					outbb+=this.toBB($el);
 				}
 			},this));
-
 			outbb.replace(/\uFEFF/g,"");
 			return outbb;
 		},
@@ -2589,13 +2772,11 @@ wbbdebug=true;
 						}
 						if (inp.type && inp.type=="div") {
 							//div input, support wysiwyg input
-							$c.append(this.strf('<div class="wbbm-inp-row"><label>{title}</label><div class="inp-text div-modal-text" contenteditable="true" name="{param}">{value}</div></div>',inp));
+							$c.append(this.strf('<div class="wbbm-inp-row"><label>{title}</label><div class="wbbm-inp-upperText">{upperText}</div><div class="inp-text div-modal-text" contenteditable="true" name="{param}">{value}</div></div><div class="wbbm-inp-underText">{underText}</div>',inp));
 						}else{
 							//default input
-							$c.append(this.strf('<div class="wbbm-inp-row"><label>{title}</label><input class="inp-text modal-text" type="text" name="{param}" value="{value}"/></div>',inp));
+							$c.append(this.strf('<div class="wbbm-inp-row"><label>{title}</label><div class="wbbm-inp-upperText">{upperText}</div><input class="inp-text modal-text" type="text" name="{param}" value="{value}"/></div><div class="wbbm-inp-underText">{underText}</div>',inp));
 						}
-
-
 					},this));
 				}
 			},this));
@@ -2677,6 +2858,8 @@ wbbdebug=true;
 		closeModal: function() {
 			$(document.body).css("overflow","auto").css("padding-right","0").unbind("keyup",this.escModal); //ESC key close modal;
 			this.$modal.find('#wbbm-submit,#wbbm-remove').unbind('click');
+			this.$modal.find('.wbbm-error').html('');
+			this.$modal.find('.wbbm-error').hide();
 			this.$modal.hide();
 			this.lastRange=false;
 			return this;

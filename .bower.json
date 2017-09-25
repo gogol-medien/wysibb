@@ -1,9 +1,10 @@
 {
     "name": "wysibb",
-    "version": "1.5.2",
+    "version": "1.6.0",
     "authors": [
         "Vadim Dobroskok",
-        "Sascha Haberkorn <coff33cat@gmail.com>"
+        "Sascha Haberkorn <coff33cat@gmail.com>",
+        "Mikaël Perez-Delacour <mikael.perez-delacour@gogol-medien.de>"
     ],
     "repository": {
         "type": "git",

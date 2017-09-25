@@ -57,7 +57,7 @@ WBBLANG['de'] = {
 	modal_video_infoTextUpperInput: "Es können nur einzelne Videos der jeweiligen Plattformen eingebunden werden, nicht jedoch Playlists, Streams oder Übersichtsseiten.",
 	modal_video_infoTextUnderInput: "<span>Zum Einbinden verwenden Sie bitte die Web-URL und nicht den Einbettungscode.<br>Unterstützte Plattformen:</span><span><ul><li>Youtube</li><li>Vimeo</li></ul></span>",
 	
-	modal_map_text: "Geben Sie die URL der Karte ein",
+	modal_map_text: "Geben Sie die Einbettcode der Karte ein",
 	modal_map_infoTextUpperInput: "",
 	modal_map_infoTextUnderInput: "<span>Zum Einbinden verwenden Sie bitte den Einbettcode und nicht die Web-URL.<br>Unterstützte Plattformen:</span><span><ul><li>Google Maps</li><li>OpenStreetmaps</li></ul></span>",
 

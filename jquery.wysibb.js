@@ -59,9 +59,9 @@ WBBLANG['en'] = CURLANG = {
 	modal_video_infoTextUpperInput: "Only the videos from the platforms can be integrated. Playlists, streams or overviews are not supported",
 	modal_video_infoTextUnderInput: "<span>Please use the Embed map code, not the share link.<br>Supported platforms:</span><span><ul><li>Youtube</li><li>Vimeo</li></ul></span>",
 	
-	modal_map_text: "Enter the URL of the map",
+	modal_map_text: "Enter the embed code of the map",
 	modal_map_infoTextUpperInput: "",
-	modal_map_infoTextUnderInput: "<span>Please use the Embed map code, not the share link, in order to use the map integration.<br>Supported platforms:</span><span><ul><li>Google Maps</li><li>OpenStreetmaps</li></ul></span>",
+	modal_map_infoTextUnderInput: "<span>Please use the embed map code, not the share link, in order to use the map integration.<br>Supported platforms:</span><span><ul><li>Google Maps</li><li>OpenStreetmaps</li></ul></span>",
 	
 	
 	close: "Close",

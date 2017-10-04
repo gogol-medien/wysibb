@@ -1020,12 +1020,12 @@ wbbdebug=false;
 					if (!this.$pasteBlock) {
 						this.saveRange();
 						this.$pasteBlock = $(this.elFromString('<div style="opacity:0;" contenteditable="true">\uFEFF</div>'));
-
+						var pastedData = (e.originalEvent.clipboardData || window.clipboardData).getData('Text');
 						this.$pasteBlock.appendTo(this.body);
 						//if (!$.support.search?type=2) {this.$pasteBlock.focus();} //IE 7,8 FIX
 							setTimeout($.proxy(function() {
-								this.clearPaste(this.$pasteBlock);
-								var rdata = '<span>'+this.$pasteBlock[0].innerText+'</span>';// only raw text, no html | Mantis 7885
+								//this.clearPaste(this.$pasteBlock);
+								var rdata = '<span>'+pastedData.replace(/\n/g, "<br />")+'</span>';// only raw text | Mantis 7885
 								this.$body.attr("contentEditable","true");
 								this.$pasteBlock.blur().remove();
 								this.body.focus();

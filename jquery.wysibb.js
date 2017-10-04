@@ -46,7 +46,10 @@ WBBLANG['en'] = CURLANG = {
 	modal_email_text: "Display email",
 	modal_email_url: "Email",
 	modal_link_tab1: "Insert URL",
+	
 	modal_error_url: "Invalid URL",
+	modal_error_not_embedable: "This URL can not be embed. This will only show the link",
+	modal_error_map: "This URL can not be embed. This will only show the link. Please use the embed map",
 	
 	modal_img_title: "Insert image",
 	modal_img_tab1: "Insert URL",
@@ -379,38 +382,67 @@ wbbdebug=false;
 							if (url) {
 								url = url.replace(/^\s+/,"").replace(/\s+$/,"");
 							}
-							// There is a different variable per social media so Wysibb know which transform translation to use. (variable name are keys)
-							var link = null;
-							if (url.indexOf("facebook")!=-1) {
-								link = url.match(/^(http[s]*:\/\/.+facebook\.com\/.+)/i);
-								if(link != null){
-									this.insertAtCursor(this.getCodeByCommand(cmd,{facebookLink:link[1]}));
-								}
-							}else if (url.indexOf("instagram")!=-1) {
-								link = url.match(/^(http[s]*:\/\/.*instagram\.com\/.+)/i);
-								if(link != null){
-									this.insertAtCursor(this.getCodeByCommand(cmd,{instagramLink:link[1]}));
-								}
-							}if (url.indexOf("twitter")!=-1) {
-								link = url.match(/^(http[s]*:\/\/.*twitter\.com\/.+)/i);
-								if(link != null){
-									this.insertAtCursor(this.getCodeByCommand(cmd,{twitterLink:link[1]}));
-								}
-							}if (url.indexOf("tumblr")!=-1) {
-								link = url.match(/^(http[s]*:\/\/.*tumblr\.com\/.+)/i);
-								if(link != null){
-									this.insertAtCursor(this.getCodeByCommand(cmd,{tumblrLink:link[1]}));
-								}
-							}if (url.indexOf("plus.google")!=-1) {
-								link = url.match(/^(http[s]*:\/\/.*plus\.google\.com\/.+)/i);
-								if(link != null){
-									this.insertAtCursor(this.getCodeByCommand(cmd,{googleplusLink:link[1]}));
-								}
+							// variable name used in "insertAtCursor()" are keys. So there is a different variable per social media. Like this Wysibb will know which transform translation to use.
+							var flag_error = true;
+							
+							
+							// if the url match one of the following regex, then this is a valid url
+							//Facebook
+							if(		url.match(/http(s){0,1}:\/\/(.*)facebook\.com\/(.*)\/posts\/(.*)/)		!== null
+	                            ||	url.match(/http(s){0,1}:\/\/(.*)facebook\.com\/(.*)\/activity\/(.*)/)	!== null
+	                            ||	url.match(/http(s){0,1}:\/\/(.*)facebook\.com\/(.*)\/photos\/(.*)/)		!== null
+	                            ||	url.match(/http(s){0,1}:\/\/(.*)facebook\.com\/photo(s\/|\.php)(.*)/)	!== null
+	                            ||	url.match(/http(s){0,1}:\/\/(.*)facebook\.com\/permalink\.php(.*)/)		!== null
+	                            ||	url.match(/http(s){0,1}:\/\/(.*)facebook\.com\/media\/(.*)/) 			!== null
+	                            ||	url.match(/http(s){0,1}:\/\/(.*)facebook\.com\/questions\/(.*)/) 		!== null
+	                            ||	url.match(/http(s){0,1}:\/\/(.*)facebook\.com\/notes\/(.*)/)			!== null
+	                            ||	url.match(/http(s){0,1}:\/\/(.*)facebook\.com\/(.*)\/videos\/(.*)/)		!== null
+	                            ||	url.match(/http(s){0,1}:\/\/(.*)facebook\.com\/video\.php(.*)/)			!== null) {
+									
+									this.insertAtCursor(this.getCodeByCommand(cmd,{facebookLink:url}));
+									flag_error=false;
+							}
+							
+							//Instagram
+							if (	url.match(/http(s){0,1}:\/\/(.*)instagram\.com\/p\//)	!== null
+								||	url.match(/http(s){0,1}:\/\/(.*)instagr\.am\/p\//)		!== null) {
+
+									this.insertAtCursor(this.getCodeByCommand(cmd,{instagramLink:url}));
+									flag_error=false;
+							}
+							
+							//Twitter
+							if (url.match(/http(s){0,1}:\/\/(.*)twitter\.com\//) !== null) {
+								this.insertAtCursor(this.getCodeByCommand(cmd,{twitterLink:url}));
+								flag_error=false;
+							}
+							
+							//Tumblr
+							if (url.match(/http(s){0,1}:\/\/(.+)\.tumblr\.com\/post/) !== null) {
+									this.insertAtCursor(this.getCodeByCommand(cmd,{tumblrLink:url}));
+									flag_error=false;
+							}
+							
+							//Google+
+							if (url.match(/http(s){0,1}:\/\/plus\.google\.com\/(.*)\/posts\/(.*)/) !== null) {
+									this.insertAtCursor(this.getCodeByCommand(cmd,{googleplusLink:url}));
+									flag_error=false;
 							}
 								
 
-							if(link == null){
-								this.error(CURLANG.modal_error_url);								
+							if(flag_error == true){
+								//show a different error message if the link aren't "embedable"
+								if( 	url.indexOf("facebook")!=-1
+									||	url.indexOf("facebook")!=-1	
+									||	url.indexOf("instagram")!=-1
+									||	url.indexOf("twitter")!=-1	
+									||	url.indexOf("tumblr")!=-1	
+									||	url.indexOf("plus.google")!=-1){
+									this.error(CURLANG.modal_error_not_embedable);
+									
+								} else {
+									this.error(CURLANG.modal_error_url);
+								}
 							}else{
 								this.closeModal();
 							}
@@ -528,11 +560,11 @@ wbbdebug=false;
 							}
 							var mapLink = null;
 							var host = null;
-							if (url.indexOf("google.com/maps")!=-1 && url.indexOf("google.com/maps/d/edit")==-1){
+							if (url.indexOf("google.com/maps/embed")!=-1){
 								if(url.indexOf("iframe")!=-1){
 									url = url.match(/src="(.*?)"/i)[1];
 								}
-								mapLink = url.match(/(^http[s]*:\/\/www\.google\.com\/maps\/.+)/i);
+								mapLink = url.match(/(^http[s]*:\/\/www\.google\..{2,3}\/maps\/embed\?.+)/i);
 							}else if (url.indexOf("openstreetmap.org")!=-1) {
 								if(url.indexOf("iframe")!=-1){
 									url = url.match(/src="(.*?)"/i)[1];
@@ -547,7 +579,15 @@ wbbdebug=false;
 								this.insertAtCursor(this.getCodeByCommand(cmd,{maplink:mapLink[1]}));
 								this.closeModal();
 							}else{
-								this.error(CURLANG.modal_error_url);
+								// Show another error message when the user paste a good map URL but not an "embedable" map URL 
+								if( 	url.match(/google\..{2,3}\/maps\/place/i)	!= null
+										||	url.indexOf("goo.gl/maps")				!=-1	
+										||	url.indexOf("openstreetmap.org/#map")	!=-1
+										||	url.indexOf("osm.org/go")				!=-1){
+										this.error(CURLANG.modal_error_map);
+									} else {
+										this.error(CURLANG.modal_error_url);
+									}
 							}
 							
 							this.updateUI();

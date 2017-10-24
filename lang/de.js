@@ -44,7 +44,10 @@ WBBLANG['de'] = {
 	modal_email_text: "Display E-Mail",
 	modal_email_url: "E-Mail",
 	modal_link_tab1: "Insert URL",
+	
 	modal_error_url: "Ungultige URL",
+	modal_error_not_embedable: "URL nicht einbettbar. Der Eintrag wird nur verlinkt",
+	modal_error_map: "URLs nicht einbettbar. Der Eintrag wird nur verlinkt. Bitte verwenden Sie den Einbettcode",
 	
 	modal_img_title: "Bild hochladen",
 	modal_img_tab1: "URL eingeben",

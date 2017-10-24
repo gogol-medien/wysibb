@@ -1058,6 +1058,7 @@ wbbdebug=false;
 				//clear html on paste from external editors
 				this.$body.bind('paste', $.proxy(function(e) {
 					if (!this.$pasteBlock) {
+						var scrollY = window.scrollY; 
 						this.saveRange();
 						this.$pasteBlock = $(this.elFromString('<div style="opacity:0;" contenteditable="true">\uFEFF</div>'));
 						var pastedData = (e.originalEvent.clipboardData || window.clipboardData).getData('Text');
@@ -1069,7 +1070,7 @@ wbbdebug=false;
 								this.$body.attr("contentEditable","true");
 								this.$pasteBlock.blur().remove();
 								this.body.focus();
-
+								window.scrollTo(0,scrollY);
 								if (this.cleartext) {
 									$.log("Check if paste to clearText Block");
 									if (this.isInClearTextBlock()) {

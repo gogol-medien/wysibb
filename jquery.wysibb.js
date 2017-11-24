@@ -36,8 +36,8 @@ WBBLANG['en'] = CURLANG = {
 
 	
 	modal_social_title: "Insert social media link",
-	modal_social_text: "Please use the Embed map code, not the share link.",
-	modal_social_infoTextUpperInput: "Only the post from the platforms can be integrated. Overiews are not supported.",
+	modal_social_text: "Please use the embed code, not the share link.",
+	modal_social_infoTextUpperInput: "Only single posts of supported platforms can be integrated. Profiles and pages are not supported.",
 	modal_social_infoTextUnderInput: "<span>Supported platforms:</span><span><ul><li>Facebook</li><li>Instagram</li><li>Twitter</li></ul></span>",
 	
 	modal_link_title: "Insert link",
@@ -48,8 +48,8 @@ WBBLANG['en'] = CURLANG = {
 	modal_link_tab1: "Insert URL",
 	
 	modal_error_url: "Invalid URL",
-	modal_error_not_embedable: "This URL can not be embed. This will only show the link",
-	modal_error_map: "This URL can not be embed. This will only show the link. Please use the embed map",
+	modal_error_not_embedable: "This URL can not be embedded. Only the link will be displayed.",
+	modal_error_map: "This URL can not be embedded. Only a link will be displayed. Please use the embed code.",
 	
 	modal_img_title: "Insert image",
 	modal_img_tab1: "Insert URL",
@@ -59,12 +59,12 @@ WBBLANG['en'] = CURLANG = {
 	add_attach: "Add Attachment",
 
 	modal_video_text: "Enter the URL of the video",
-	modal_video_infoTextUpperInput: "Only the videos from the platforms can be integrated. Playlists, streams or overviews are not supported",
-	modal_video_infoTextUnderInput: "<span>Please use the Embed map code, not the share link.<br>Supported platforms:</span><span><ul><li>Youtube</li><li>Vimeo</li></ul></span>",
+	modal_video_infoTextUpperInput: "Only single videos on supported platforms can be integrated. Playlists, streams or other pages are not supported",
+	modal_video_infoTextUnderInput: "<span>Please use the embed code, not the share link.<br>Supported platforms:</span><span><ul><li>Youtube</li><li>Vimeo</li></ul></span>",
 	
 	modal_map_text: "Enter the embed code of the map",
 	modal_map_infoTextUpperInput: "",
-	modal_map_infoTextUnderInput: "<span>Please use the embed map code, not the share link, in order to use the map integration.<br>Supported platforms:</span><span><ul><li>Google Maps</li><li>OpenStreetmaps</li></ul></span>",
+	modal_map_infoTextUnderInput: "<span>Please use the embed code, not the share link.<br>Supported platforms:</span><span><ul><li>Google Maps</li><li>OpenStreetmaps</li></ul></span>",
 	
 	
 	close: "Close",

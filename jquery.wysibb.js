@@ -1084,9 +1084,9 @@ wbbdebug=false;
 								this.insertAtCursor(rdata,false);
 
 								//#7904 - jump on paste, set focus on cursor in wysibb editor								
-								range = this.lastRange;// last range was set in this.saveRange()
+								var range = this.lastRange;// last range was set in this.saveRange()
 						        range.collapse(false);// set the cursor position at end of the range (false=end, true=start)
-						        selection = window.getSelection(); // get the selection within the range
+						        var selection = window.getSelection(); // get the selection within the range
 						        selection.removeAllRanges();//remove any range already made
 						        selection.addRange(range);//set the scroll focus on the cursor positions
 						        

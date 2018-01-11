@@ -41,8 +41,10 @@ WBBLANG['en'] = CURLANG = {
 	modal_social_infoTextUnderInput: "<span>Supported platforms:</span><span><ul><li>Facebook</li><li>Instagram</li><li>Twitter</li></ul></span>",
 	
 	modal_link_title: "Insert link",
+	modal_link_newtab: "Open link in a new tab",
 	modal_link_text: "Display text",
 	modal_link_url: "URL",
+
 	modal_email_text: "Display email",
 	modal_email_url: "Email",
 	modal_link_tab1: "Insert URL",
@@ -194,15 +196,16 @@ wbbdebug=false;
 						tabs: [
 							{
 								input: [
-									{param: "SELTEXT",title:CURLANG.modal_link_text, type: "div"},
-									{param: "URL",title:CURLANG.modal_link_url,validation: '^http(s)?://'}
+									{param: "LINKTEXT",title:CURLANG.modal_link_text},
+									{param: "URL",title:CURLANG.modal_link_url,validation: '^http(s)?://'},
+									{param: "ISNEWTAB",title:CURLANG.modal_link_newtab, type: "checkbox"},
 								]
 							}
 						]
 					},
 					transform : {
-						'<a href="{URL}">{SELTEXT}</a>':"[url={URL}]{SELTEXT}[/url]",
-						'<a href="{URL}">{URL}</a>':"[url]{URL}[/url]"
+						'<a href="{URL}" openinnewtab="{ISNEWTAB}" >{LINKTEXT}</a>':"[url={URL},{ISNEWTAB}]{LINKTEXT}[/url]",
+						'<a href="{URL}" openinnewtab="{ISNEWTAB}" >{URL}</a>':"[url,{ISNEWTAB}]{URL}[/url]",
 					}
 				},
 				img : {
@@ -520,7 +523,6 @@ wbbdebug=false;
 							}else{
 								this.error(CURLANG.modal_error_url);
 							}
-							
 							
 							this.updateUI();
 							return false;
@@ -963,7 +965,7 @@ wbbdebug=false;
 				}
 			};
 
-			this.options.btnlist=btnlist; //use for transforms, becouse select elements not present in buttons
+			this.options.btnlist=btnlist; //use for transforms, because select elements not present in buttons
 
 			//add custom rules, for table,tr,td and other
 			$.extend(o.rules,this.options.customRules);
@@ -1488,7 +1490,7 @@ wbbdebug=false;
 			}
 		},
 
-		//COgdfMMAND FUNCTIONS
+		//COMMAND FUNCTIONS
 		execCommand: function(command,value) {
 			$.log("execCommand: "+command);
 			var opt = this.options.allButtons[command];
@@ -2814,7 +2816,9 @@ wbbdebug=false;
 						if (inp.type && inp.type=="div") {
 							//div input, support wysiwyg input
 							$c.append(this.strf('<div class="wbbm-inp-row"><label>{title}</label><div class="wbbm-inp-upperText">{upperText}</div><div class="inp-text div-modal-text" contenteditable="true" name="{param}">{value}</div></div><div class="wbbm-inp-underText">{underText}</div>',inp));
-						}else{
+						}else if (inp.type && inp.type=="checkbox") {
+							$c.append(this.strf('<div><input id="wysibb_chkb_{param}" class="inp-text" type="checkbox" name="{param}"/><label for="wysibb_chkb_{param}">{title}</label></div>',inp));
+						} else {
 							//default input
 							$c.append(this.strf('<div class="wbbm-inp-row"><label>{title}</label><div class="wbbm-inp-upperText">{upperText}</div><input class="inp-text modal-text" type="text" name="{param}" value="{value}"/></div><div class="wbbm-inp-underText">{underText}</div>',inp));
 						}
@@ -2843,7 +2847,9 @@ wbbdebug=false;
 					var tid = $(el).parents(".tab-cont").attr("tid");
 					var pname = $(el).attr("name").toLowerCase();
 					var pval="";
-					if ($(el).is("input,textrea,select")) {
+					if ($(el).is("input:checkbox")) {
+						pval = $(el).is(":checked")?true:false;
+					}else if ($(el).is("input,textrea,select")) {
 						pval = $(el).val();
 					}else{
 						pval = $(el).html();
@@ -2855,7 +2861,9 @@ wbbdebug=false;
 							$(el).after('<span class="wbbm-inperr">'+CURLANG.validation_err+'</span>').addClass("wbbm-brdred");
 						}
 					}
-					params[pname]=pval;
+					if( pval !== '' ){
+						params[pname]=pval;
+					}
 				},this));
 				if (valid) {
 					$.log("Last range: "+this.lastRange);

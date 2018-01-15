@@ -201,11 +201,18 @@ wbbdebug=false;
 									{param: "ISNEWTAB",title:CURLANG.modal_link_newtab, type: "checkbox"},
 								]
 							}
-						]
+						],
+						onSubmit: function(cmd,opt,queryState) {
+							var input_isNewTab = this.$modal.find('input[name="ISNEWTAB"]');
+							var newValue = input_isNewTab.is(":checked")?'newtab':'';
+							input_isNewTab.val(newValue);
+						},
 					},
 					transform : {
-						'<a href="{URL}" openinnewtab="{ISNEWTAB}" >{LINKTEXT}</a>':"[url={URL},{ISNEWTAB}]{LINKTEXT}[/url]",
-						'<a href="{URL}" openinnewtab="{ISNEWTAB}" >{URL}</a>':"[url,{ISNEWTAB}]{URL}[/url]",
+						'<a href="{URL}" newtab="">{URL}</a>'				:"[url]{URL}[/url]",
+						'<a href="{URL}" newtab="">{LINKTEXT}</a>'			:"[url={URL}]{LINKTEXT}[/url]",
+						'<a href="{URL}" newtab="{ISNEWTAB}">{URL}</a>'		:"[url`{ISNEWTAB}]{URL}[/url]",
+						'<a href="{URL}" newtab="{ISNEWTAB}">{LINKTEXT}</a>':"[url={URL}`{ISNEWTAB}]{LINKTEXT}[/url]",
 					}
 				},
 				img : {
@@ -2847,9 +2854,7 @@ wbbdebug=false;
 					var tid = $(el).parents(".tab-cont").attr("tid");
 					var pname = $(el).attr("name").toLowerCase();
 					var pval="";
-					if ($(el).is("input:checkbox")) {
-						pval = $(el).is(":checked")?true:false;
-					}else if ($(el).is("input,textrea,select")) {
+					if ($(el).is("input,textrea,select")) {
 						pval = $(el).val();
 					}else{
 						pval = $(el).html();

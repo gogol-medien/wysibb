@@ -196,7 +196,7 @@ wbbdebug=false;
 						tabs: [
 							{
 								input: [
-									{param: "LINKTEXT",title:CURLANG.modal_link_text},
+									{param: "SELTEXT",title:CURLANG.modal_link_text},
 									{param: "URL",title:CURLANG.modal_link_url,validation: '^http(s)?://'},
 									{param: "ISNEWTAB",title:CURLANG.modal_link_newtab, type: "checkbox"},
 								]
@@ -210,9 +210,9 @@ wbbdebug=false;
 					},
 					transform : {
 						'<a href="{URL}" newtab="">{URL}</a>':"[url]{URL}[/url]",
-						'<a href="{URL}" newtab="">{LINKTEXT}</a>':"[url={URL}]{LINKTEXT}[/url]",
+						'<a href="{URL}" newtab="">{SELTEXT}</a>':"[url={URL}]{SELTEXT}[/url]",
 						'<a href="{URL}" newtab="{ISNEWTAB}">{URL}</a>':"[url{ISNEWTAB}]{URL}[/url]",
-						'<a href="{URL}" newtab="{ISNEWTAB}">{LINKTEXT}</a>':"[{ISNEWTAB}url={URL}]{LINKTEXT}[/url]",
+						'<a href="{URL}" newtab="{ISNEWTAB}">{SELTEXT}</a>':"[{ISNEWTAB}url={URL}]{SELTEXT}[/url]",
 					}
 				},
 				img : {

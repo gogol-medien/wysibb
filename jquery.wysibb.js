@@ -209,10 +209,10 @@ wbbdebug=false;
 						},
 					},
 					transform : {
-						'<a href="{URL}" newtab="">{URL}</a>'				:"[url]{URL}[/url]",
-						'<a href="{URL}" newtab="">{LINKTEXT}</a>'			:"[url={URL}]{LINKTEXT}[/url]",
-						'<a href="{URL}" newtab="{ISNEWTAB}">{URL}</a>'		:"[url`{ISNEWTAB}]{URL}[/url]",
-						'<a href="{URL}" newtab="{ISNEWTAB}">{LINKTEXT}</a>':"[url={URL}`{ISNEWTAB}]{LINKTEXT}[/url]",
+						'<a href="{URL}" newtab="">{URL}</a>':"[url]{URL}[/url]",
+						'<a href="{URL}" newtab="">{LINKTEXT}</a>':"[url={URL}]{LINKTEXT}[/url]",
+						'<a href="{URL}" newtab="{ISNEWTAB}">{URL}</a>':"[url{ISNEWTAB}]{URL}[/url]",
+						'<a href="{URL}" newtab="{ISNEWTAB}">{LINKTEXT}</a>':"[{ISNEWTAB}url={URL}]{LINKTEXT}[/url]",
 					}
 				},
 				img : {
@@ -2824,7 +2824,11 @@ wbbdebug=false;
 							//div input, support wysiwyg input
 							$c.append(this.strf('<div class="wbbm-inp-row"><label>{title}</label><div class="wbbm-inp-upperText">{upperText}</div><div class="inp-text div-modal-text" contenteditable="true" name="{param}">{value}</div></div><div class="wbbm-inp-underText">{underText}</div>',inp));
 						}else if (inp.type && inp.type=="checkbox") {
-							$c.append(this.strf('<div><input id="wysibb_chkb_{param}" class="inp-text" type="checkbox" name="{param}"/><label for="wysibb_chkb_{param}">{title}</label></div>',inp));
+							if( typeof inp.value !== 'undefined' && inp.value != '' ){
+								$c.append(this.strf('<div><input id="wysibb_chkb_{param}" class="inp-text" type="checkbox" checked=checked name="{param}"/><label for="wysibb_chkb_{param}">{title}</label></div>',inp));
+							} else {
+								$c.append(this.strf('<div><input id="wysibb_chkb_{param}" class="inp-text" type="checkbox" name="{param}"/><label for="wysibb_chkb_{param}">{title}</label></div>',inp));
+							}
 						} else {
 							//default input
 							$c.append(this.strf('<div class="wbbm-inp-row"><label>{title}</label><div class="wbbm-inp-upperText">{upperText}</div><input class="inp-text modal-text" type="text" name="{param}" value="{value}"/></div><div class="wbbm-inp-underText">{underText}</div>',inp));

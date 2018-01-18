@@ -1141,6 +1141,11 @@ wbbdebug=false;
 				this.imgListeners();
 			}
 
+            // Resizes the Toolbar of the Editor in mobile view when the height
+            // of the Content Div changes
+            $('.wysibb-text-editor .wysibb-text').on('keyup keydown', function() {
+                $('.wysibb-toolbar').css("max-height",$(this).outerHeight());
+            });
 
 			//this.$editor.append('<span class="powered">Powered by <a href="http://www.wysibb.com" target="_blank">WysiBB<a/></span>');
 

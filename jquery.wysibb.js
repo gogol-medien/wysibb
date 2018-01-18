@@ -1143,7 +1143,7 @@ wbbdebug=false;
 
             // Resizes the Toolbar of the Editor in mobile view when the height
             // of the Content Div changes
-            $('.wysibb-text-editor .wysibb-text').on('keyup keydown', function() {
+            $('.wysibb-text-editor').on('keyup keydown', function() {
                 $('.wysibb-toolbar').css("max-height",$(this).outerHeight());
             });
 

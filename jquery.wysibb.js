@@ -1834,7 +1834,7 @@ wbbdebug=false;
 				//get selected text
 				params["seltext"] = this.getSelectText(false);
 				//$.log("seltext: '"+params["seltext"]+"'");
-				if( params["seltext"] === '' && command == 'link' ){
+				if( (params["seltext"] === '' || params["seltext"] === '\uFEFF') && command == 'link' ){
 					params["seltext"] = undefined;
 				} else if (params["seltext"]=="") {params["seltext"]="\uFEFF";}
 				else{

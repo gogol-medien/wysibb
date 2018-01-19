@@ -204,15 +204,15 @@ wbbdebug=false;
 						],
 						onSubmit: function(cmd,opt,queryState) {
 							var input_isNewTab = this.$modal.find('input[name="ISNEWTAB"]');
-							var newValue = input_isNewTab.is(":checked")?'newtab':'';
+							var newValue = input_isNewTab.is(":checked")?'-nt':'';
 							input_isNewTab.val(newValue);
 						},
 					},
 					transform : {
 						'<a href="{URL}" newtab="">{URL}</a>':"[url]{URL}[/url]",
 						'<a href="{URL}" newtab="">{SELTEXT}</a>':"[url={URL}]{SELTEXT}[/url]",
+						'<a href="{URL}" newtab="{ISNEWTAB}">{SELTEXT}</a>':"[url{ISNEWTAB}={URL}]{SELTEXT}[/url]",
 						'<a href="{URL}" newtab="{ISNEWTAB}">{URL}</a>':"[url{ISNEWTAB}]{URL}[/url]",
-						'<a href="{URL}" newtab="{ISNEWTAB}">{SELTEXT}</a>':"[{ISNEWTAB}url={URL}]{SELTEXT}[/url]",
 					}
 				},
 				img : {
@@ -1780,6 +1780,9 @@ wbbdebug=false;
 			if (!params["seltext"]) {
 				//get selected text
 				params["seltext"] = this.getSelectText(true);
+				if( params["seltext"] === '' && command == 'link' ){
+					params["seltext"] = undefined;
+				}
 			}
 
 			var bbcode = this.options.allButtons[command].bbcode;
@@ -1831,7 +1834,9 @@ wbbdebug=false;
 				//get selected text
 				params["seltext"] = this.getSelectText(false);
 				//$.log("seltext: '"+params["seltext"]+"'");
-				if (params["seltext"]=="") {params["seltext"]="\uFEFF";}
+				if( params["seltext"] === '' && command == 'link' ){
+					params["seltext"] = undefined;
+				} else if (params["seltext"]=="") {params["seltext"]="\uFEFF";}
 				else{
 					//clear selection from current command tags
 					params["seltext"] = this.clearFromSubInsert(params["seltext"],command);
@@ -1843,7 +1848,6 @@ wbbdebug=false;
 
 				}
 			}
-
 			var postsel="";
 			this.seltextID = "wbbid_"+(++this.lastid);
 			if (command!="link" && command!="img") {
@@ -2237,7 +2241,6 @@ wbbdebug=false;
 										}
 									}
 									if ($el.is('table,tr,td,font')) {keepElement=true;}
-
 									return cont || "";
 								},this));
 								if (skip) {continue;}
@@ -2299,7 +2302,7 @@ wbbdebug=false;
 					$.each(this.options.allButtons[b].transform,$.proxy(function(html,bb) {
 						html = html.replace(/\n/g,""); //IE 7,8 FIX
 						var a=[];
-						bb = bb.replace(/(\(|\)|\[|\]|\.|\*|\?|\:|\\|\\)/g,"\\$1");
+						bb = bb.replace(/(\(|\)|\[|\]|\.|\*|\?|\:|\/|\\)/g,"\\$1");
 							//.replace(/\s/g,"\\s");
 						bb = bb.replace(/\{(.*?)(\\\[.*?\\\])*\}/gi,$.proxy(function(str,s,vrgx) {
 							a.push(s);

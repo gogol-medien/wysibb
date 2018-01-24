@@ -1143,8 +1143,12 @@ wbbdebug=false;
 
             // Resizes the Toolbar of the Editor in mobile view when the height
             // of the Content Div changes
-            $('.wysibb-text-editor').on('keyup keydown', function() {
-                $('.wysibb-toolbar').css("max-height",$(this).outerHeight());
+            $('.wysibb-text-editor').bind('keydown keyup paste cut',function() {
+                // Timeout to load the new height of the textarea
+                setTimeout(
+                    function() {
+                        $('.wysibb-toolbar').css("max-height",$('.wysibb-text-editor').outerHeight());
+                    }, 50);
             });
 
 			//this.$editor.append('<span class="powered">Powered by <a href="http://www.wysibb.com" target="_blank">WysiBB<a/></span>');

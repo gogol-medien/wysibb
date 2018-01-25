@@ -564,7 +564,7 @@ wbbdebug=false;
 								if(url.indexOf("iframe")!=-1){
 									url = url.match(/src="(.*?)"/i)[1];
 								}
-								mapLink = url.match(/(http[s]*:\/\/www\.google\..{2,3}\/maps\/(?:.\/)?embed\?.+)/i);
+								mapLink = url.match(/(^http[s]*:\/\/www\.google\..{2,3}\/maps\/(?:.\/)?embed\?.+)/i);
 							}else if (url.indexOf("openstreetmap.org")!=-1) {
 								if(url.indexOf("iframe")!=-1){
 									url = url.match(/src="(.*?)"/i)[1];

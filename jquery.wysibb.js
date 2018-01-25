@@ -64,7 +64,7 @@ WBBLANG['en'] = CURLANG = {
 	
 	modal_map_text: "Enter the embed code of the map",
 	modal_map_infoTextUpperInput: "",
-	modal_map_infoTextUnderInput: "<span>Please use the embed code, not the share link.<br>Supported platforms:</span><span><ul><li>Google Maps</li><li>OpenStreetmaps</li></ul></span>",
+	modal_map_infoTextUnderInput: "<span>Please use the embed code, not the share link.<br>Supported platforms:</span><span><ul><li>Google Maps / Google My Maps</li><li>OpenStreetmaps</li></ul></span>",
 	
 	
 	close: "Close",
@@ -560,11 +560,11 @@ wbbdebug=false;
 							}
 							var mapLink = null;
 							var host = null;
-							if (url.indexOf("google.com/maps/embed")!=-1){
+							if (url.indexOf("google.com/maps/")!=-1){
 								if(url.indexOf("iframe")!=-1){
 									url = url.match(/src="(.*?)"/i)[1];
 								}
-								mapLink = url.match(/(^http[s]*:\/\/www\.google\..{2,3}\/maps\/embed\?.+)/i);
+								mapLink = url.match(/(http[s]*:\/\/www\.google\..{2,3}\/maps\/(?:.\/)?embed\?.+)/i);
 							}else if (url.indexOf("openstreetmap.org")!=-1) {
 								if(url.indexOf("iframe")!=-1){
 									url = url.match(/src="(.*?)"/i)[1];

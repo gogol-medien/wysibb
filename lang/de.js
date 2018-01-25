@@ -62,7 +62,7 @@ WBBLANG['de'] = {
 	
 	modal_map_text: "Geben Sie die Einbettcode der Karte ein",
 	modal_map_infoTextUpperInput: "",
-	modal_map_infoTextUnderInput: "<span>Zum Einbinden verwenden Sie bitte den Einbettcode und nicht die Web-URL.<br>Unterstützte Plattformen:</span><span><ul><li>Google Maps</li><li>OpenStreetmaps</li></ul></span>",
+	modal_map_infoTextUnderInput: "<span>Zum Einbinden verwenden Sie bitte den Einbettcode und nicht die Web-URL.<br>Unterstützte Plattformen:</span><span><ul><li>Google Maps / Google My Maps</li><li>OpenStreetmaps</li></ul></span>",
 
 	
 	close: "Schlie\u00dfen",

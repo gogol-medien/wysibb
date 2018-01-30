@@ -1065,21 +1065,24 @@ wbbdebug=false;
 
 
 				//clear html on paste from external editors
+				//clear html on paste from external editors
 				this.$body.bind('paste', $.proxy(function(e) {
 					if (!this.$pasteBlock) {
-						var scrollY = window.scrollY; 
+						// Mantis #7904 - jump on paste
+						var window_scrollY = window.pageYOffset;
+						// to be continued... #7904
+						
 						this.saveRange();
 						this.$pasteBlock = $(this.elFromString('<div style="opacity:0;" contenteditable="true">\uFEFF</div>'));
 						var pastedData = (e.originalEvent.clipboardData || window.clipboardData).getData('Text');
 						this.$pasteBlock.appendTo(this.body);
 						//if (!$.support.search?type=2) {this.$pasteBlock.focus();} //IE 7,8 FIX
 							setTimeout($.proxy(function() {
-								//this.clearPaste(this.$pasteBlock);
-								var rdata = '<span>'+pastedData.replace(/\n/g, "<br />")+'</span>';// only raw text | Mantis 7885
+								this.clearPaste(this.$pasteBlock);
+								var rdata = '<span>'+pastedData.replace(/\n/g, "<br />")+'</span>';// only raw text | Mantis #7885
 								this.$body.attr("contentEditable","true");
 								this.$pasteBlock.blur().remove();
 								this.body.focus();
-								window.scrollTo(0,scrollY);
 								if (this.cleartext) {
 									$.log("Check if paste to clearText Block");
 									if (this.isInClearTextBlock()) {
@@ -1087,8 +1090,20 @@ wbbdebug=false;
 									}
 								}
 								rdata = rdata.replace(/\t/g,'<span class="wbbtab"></span>');
-								this.selectRange(this.lastRange);
 								this.insertAtCursor(rdata,false);
+
+								//#7904 - jump on paste, set focus on cursor in wysibb editor								
+								var range = this.lastRange;// last range was set in this.saveRange()
+						        range.collapse(false);// set the cursor position at end of the range (false=end, true=start)
+						        var selection = window.getSelection(); // get the selection within the range
+						        selection.removeAllRanges();//remove any range already made
+						        selection.addRange(range);//set the scroll focus on the cursor positions
+						        
+						        // reset windows scroll
+								window.scrollTo(0, window_scrollY); // Chrome
+								window.scroll(0, window_scrollY); // IE & Firefox
+								//end #7904
+								
 								this.lastRange=false;
 								this.$pasteBlock=false;
 							}

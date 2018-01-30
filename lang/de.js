@@ -39,6 +39,7 @@ WBBLANG['de'] = {
 	
 	
 	modal_link_title: "Link einf\u00fcgen",
+	modal_link_newtab: "Link in neuem Fenster \xf6ffnen",
 	modal_link_text: "Text",
 	modal_link_url: "URL",
 	modal_email_text: "Display E-Mail",

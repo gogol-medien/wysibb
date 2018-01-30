@@ -41,8 +41,10 @@ WBBLANG['en'] = CURLANG = {
 	modal_social_infoTextUnderInput: "<span>Supported platforms:</span><span><ul><li>Facebook</li><li>Instagram</li><li>Twitter</li></ul></span>",
 	
 	modal_link_title: "Insert link",
+	modal_link_newtab: "Open link in a new tab",
 	modal_link_text: "Display text",
 	modal_link_url: "URL",
+
 	modal_email_text: "Display email",
 	modal_email_url: "Email",
 	modal_link_tab1: "Insert URL",
@@ -194,15 +196,23 @@ wbbdebug=false;
 						tabs: [
 							{
 								input: [
-									{param: "SELTEXT",title:CURLANG.modal_link_text, type: "div"},
-									{param: "URL",title:CURLANG.modal_link_url,validation: '^http(s)?://'}
+									{param: "SELTEXT",title:CURLANG.modal_link_text},
+									{param: "URL",title:CURLANG.modal_link_url,validation: '^http(s)?://'},
+									{param: "ISNEWTAB",title:CURLANG.modal_link_newtab, type: "checkbox"},
 								]
 							}
-						]
+						],
+						onSubmit: function(cmd,opt,queryState) {
+							var input_isNewTab = this.$modal.find('input[name="ISNEWTAB"]');
+							var newValue = input_isNewTab.is(":checked")?'-nt':'';
+							input_isNewTab.val(newValue);
+						},
 					},
 					transform : {
-						'<a href="{URL}">{SELTEXT}</a>':"[url={URL}]{SELTEXT}[/url]",
-						'<a href="{URL}">{URL}</a>':"[url]{URL}[/url]"
+						'<a href="{URL}" newtab="">{URL}</a>':"[url]{URL}[/url]",
+						'<a href="{URL}" newtab="">{SELTEXT}</a>':"[url={URL}]{SELTEXT}[/url]",
+						'<a href="{URL}" newtab="{ISNEWTAB}">{SELTEXT}</a>':"[url{ISNEWTAB}={URL}]{SELTEXT}[/url]",
+						'<a href="{URL}" newtab="{ISNEWTAB}">{URL}</a>':"[url{ISNEWTAB}]{URL}[/url]",
 					}
 				},
 				img : {
@@ -520,7 +530,6 @@ wbbdebug=false;
 							}else{
 								this.error(CURLANG.modal_error_url);
 							}
-							
 							
 							this.updateUI();
 							return false;
@@ -963,7 +972,7 @@ wbbdebug=false;
 				}
 			};
 
-			this.options.btnlist=btnlist; //use for transforms, becouse select elements not present in buttons
+			this.options.btnlist=btnlist; //use for transforms, because select elements not present in buttons
 
 			//add custom rules, for table,tr,td and other
 			$.extend(o.rules,this.options.customRules);
@@ -1488,7 +1497,7 @@ wbbdebug=false;
 			}
 		},
 
-		//COgdfMMAND FUNCTIONS
+		//COMMAND FUNCTIONS
 		execCommand: function(command,value) {
 			$.log("execCommand: "+command);
 			var opt = this.options.allButtons[command];
@@ -1771,6 +1780,9 @@ wbbdebug=false;
 			if (!params["seltext"]) {
 				//get selected text
 				params["seltext"] = this.getSelectText(true);
+				if( params["seltext"] === '' && command == 'link' ){
+					params["seltext"] = undefined;
+				}
 			}
 
 			var bbcode = this.options.allButtons[command].bbcode;
@@ -1822,7 +1834,9 @@ wbbdebug=false;
 				//get selected text
 				params["seltext"] = this.getSelectText(false);
 				//$.log("seltext: '"+params["seltext"]+"'");
-				if (params["seltext"]=="") {params["seltext"]="\uFEFF";}
+				if( (params["seltext"] === '' || params["seltext"] === '\uFEFF') && command == 'link' ){
+					params["seltext"] = undefined;
+				} else if (params["seltext"]=="") {params["seltext"]="\uFEFF";}
 				else{
 					//clear selection from current command tags
 					params["seltext"] = this.clearFromSubInsert(params["seltext"],command);
@@ -1834,7 +1848,6 @@ wbbdebug=false;
 
 				}
 			}
-
 			var postsel="";
 			this.seltextID = "wbbid_"+(++this.lastid);
 			if (command!="link" && command!="img") {
@@ -2228,7 +2241,6 @@ wbbdebug=false;
 										}
 									}
 									if ($el.is('table,tr,td,font')) {keepElement=true;}
-
 									return cont || "";
 								},this));
 								if (skip) {continue;}
@@ -2290,7 +2302,7 @@ wbbdebug=false;
 					$.each(this.options.allButtons[b].transform,$.proxy(function(html,bb) {
 						html = html.replace(/\n/g,""); //IE 7,8 FIX
 						var a=[];
-						bb = bb.replace(/(\(|\)|\[|\]|\.|\*|\?|\:|\\|\\)/g,"\\$1");
+						bb = bb.replace(/(\(|\)|\[|\]|\.|\*|\?|\:|\/|\\)/g,"\\$1");
 							//.replace(/\s/g,"\\s");
 						bb = bb.replace(/\{(.*?)(\\\[.*?\\\])*\}/gi,$.proxy(function(str,s,vrgx) {
 							a.push(s);
@@ -2814,7 +2826,13 @@ wbbdebug=false;
 						if (inp.type && inp.type=="div") {
 							//div input, support wysiwyg input
 							$c.append(this.strf('<div class="wbbm-inp-row"><label>{title}</label><div class="wbbm-inp-upperText">{upperText}</div><div class="inp-text div-modal-text" contenteditable="true" name="{param}">{value}</div></div><div class="wbbm-inp-underText">{underText}</div>',inp));
-						}else{
+						}else if (inp.type && inp.type=="checkbox") {
+							if( typeof inp.value !== 'undefined' && inp.value != '' ){
+								$c.append(this.strf('<div><input id="wysibb_chkb_{param}" class="inp-text" type="checkbox" checked=checked name="{param}"/><label for="wysibb_chkb_{param}">{title}</label></div>',inp));
+							} else {
+								$c.append(this.strf('<div><input id="wysibb_chkb_{param}" class="inp-text" type="checkbox" name="{param}"/><label for="wysibb_chkb_{param}">{title}</label></div>',inp));
+							}
+						} else {
 							//default input
 							$c.append(this.strf('<div class="wbbm-inp-row"><label>{title}</label><div class="wbbm-inp-upperText">{upperText}</div><input class="inp-text modal-text" type="text" name="{param}" value="{value}"/></div><div class="wbbm-inp-underText">{underText}</div>',inp));
 						}
@@ -2855,7 +2873,9 @@ wbbdebug=false;
 							$(el).after('<span class="wbbm-inperr">'+CURLANG.validation_err+'</span>').addClass("wbbm-brdred");
 						}
 					}
-					params[pname]=pval;
+					if( pval !== '' ){
+						params[pname]=pval;
+					}
 				},this));
 				if (valid) {
 					$.log("Last range: "+this.lastRange);

@@ -369,7 +369,7 @@ wbbdebug=false;
 				},
 				socialembed: {
 					title: CURLANG.modal_social_title,
-					buttonHTML: '<div style="padding:6px;"><span aria-hidden="true" class="fa fa-facebook fa-lg fa-fw"></span></div>',
+					buttonHTML: '<div style="padding:6px;"><span aria-hidden="true" class="fa fab facebook fa-lg fa-fw"></span></div>',
 					modal: {
 						title: CURLANG.modal_social_title,
 						width: "600px",
@@ -463,11 +463,11 @@ wbbdebug=false;
 					},
 					transform:
 					{
-						'<div class="callout small text-center facebook" onclick="window.open(\'{FACEBOOKLINK}\');"><span class="fa-stack fa-lg"><i class="fa fa-square-o fa-stack-2x"></i><i class="fa fa-facebook fa-stack-1x"></i></span></div>':'[facebook]{FACEBOOKLINK}[/facebook]',
-						'<div class="callout small text-center instagram" onclick="window.open(\'{INSTAGRAMLINK}\');"><span class="fa-stack fa-lg"><i class="fa fa-square-o fa-stack-2x"></i><i class="fa fa-instagram fa-stack-1x"></i></span></div>':'[instagram]{INSTAGRAMLINK}[/instagram]',
-						'<div class="callout small text-center twitter" onclick="window.open(\'{TWITTERLINK}\');"><span class="fa-stack fa-lg"><i class="fa fa-square-o fa-stack-2x"></i><i class="fa fa-twitter fa-stack-1x"></i></span></div>':'[twitter]{TWITTERLINK}[/twitter]',
-						'<div class="callout small text-center tumblr" onclick="window.open(\'{TUMBLRLINK}\');"><span class="fa-stack fa-lg"><i class="fa fa-square-o fa-stack-2x"></i><i class="fa fa-tumblr fa-stack-1x"></i></span></div>':'[tumblr]{TUMBLRLINK}[/tumblr]',
-						'<div class="callout small text-center googleplus" onclick="window.open(\'{GOOGLEPLUSLINK}\');"><span class="fa-stack fa-lg"><i class="fa fa-square-o fa-stack-2x"></i><i class="fa fa-google-plus fa-stack-1x"></i></span></div>':'[googleplus]{GOOGLEPLUSLINK}[/googleplus]',
+						'<div class="callout small text-center facebook" onclick="window.open(\'{FACEBOOKLINK}\');"><span class="fa-stack fa-lg"><i class="fa far fa-square fa-stack-2x"></i><i class="fa fab fa-facebook fa-stack-1x"></i></span></div>':'[facebook]{FACEBOOKLINK}[/facebook]',
+						'<div class="callout small text-center instagram" onclick="window.open(\'{INSTAGRAMLINK}\');"><span class="fa-stack fa-lg"><i class="fa far fa-square fa-stack-2x"></i><i class="fa fab fa-instagram fa-stack-1x"></i></span></div>':'[instagram]{INSTAGRAMLINK}[/instagram]',
+						'<div class="callout small text-center twitter" onclick="window.open(\'{TWITTERLINK}\');"><span class="fa-stack fa-lg"><i class="fa far fa-square fa-stack-2x"></i><i class="fa fab fa-twitter fa-stack-1x"></i></span></div>':'[twitter]{TWITTERLINK}[/twitter]',
+						'<div class="callout small text-center tumblr" onclick="window.open(\'{TUMBLRLINK}\');"><span class="fa-stack fa-lg"><i class="fa far fa-square fa-stack-2x"></i><i class="fa fab fa-tumblr fa-stack-1x"></i></span></div>':'[tumblr]{TUMBLRLINK}[/tumblr]',
+						'<div class="callout small text-center googleplus" onclick="window.open(\'{GOOGLEPLUSLINK}\');"><span class="fa-stack fa-lg"><i class="fa far fa-square fa-stack-2x"></i><i class="fa fab fa-google-plus fa-stack-1x"></i></span></div>':'[googleplus]{GOOGLEPLUSLINK}[/googleplus]',
 					}
 				},
 				video: {
@@ -544,7 +544,7 @@ wbbdebug=false;
 				},
 				map: {
 					title: CURLANG.map,
-					buttonHTML: '<div style="padding:6px;"><span aria-hidden="true" class="fa fa-map-marker fa-lg fa-fw"></span></div>',
+					buttonHTML: '<div style="padding:6px;"><span aria-hidden="true" class="fa fa-map-marker-alt fa-lg fa-fw"></span></div>',
 					modal: {
 						title: CURLANG.map,
 						width: "600px",
@@ -605,7 +605,7 @@ wbbdebug=false;
 					},
 					transform: 
 					{
-						'<div class="callout small text-center map" onclick="window.open(\'{MAPLINK}\');"><span class="fa-stack fa-lg"><i class="fa fa-square-o fa-stack-2x"></i><i class="fa fa-map fa-stack-1x"></i></span></div>':'[map]{MAPLINK}[/map]',
+						'<div class="callout small text-center map" onclick="window.open(\'{MAPLINK}\');"><span class="fa-stack fa-lg"><i class="fa far fa-square fa-stack-2x"></i><i class="fa fa-map fa-stack-1x"></i></span></div>':'[map]{MAPLINK}[/map]',
 					}
 				},
 

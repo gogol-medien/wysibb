@@ -34,12 +34,12 @@ WBBLANG['en'] = CURLANG = {
 	map: "Insert map link",
 	removeFormat:"Remove Format",
 
-	
+
 	modal_social_title: "Insert social media link",
 	modal_social_text: "Please use the embed code, not the share link.",
 	modal_social_infoTextUpperInput: "Only single posts of supported platforms can be integrated. Profiles and pages are not supported.",
 	modal_social_infoTextUnderInput: "<span>Supported platforms:</span><span><ul><li>Facebook</li><li>Instagram</li><li>Twitter</li></ul></span>",
-	
+
 	modal_link_title: "Insert link",
 	modal_link_newtab: "Open link in a new tab",
 	modal_link_text: "Display text",
@@ -48,11 +48,11 @@ WBBLANG['en'] = CURLANG = {
 	modal_email_text: "Display email",
 	modal_email_url: "Email",
 	modal_link_tab1: "Insert URL",
-	
+
 	modal_error_url: "Invalid URL",
 	modal_error_not_embedable: "This URL can not be embedded. Only the link will be displayed.",
 	modal_error_map: "This URL can not be embedded. Only a link will be displayed. Please use the embed code.",
-	
+
 	modal_img_title: "Insert image",
 	modal_img_tab1: "Insert URL",
 	modal_img_tab2: "Upload image",
@@ -63,12 +63,12 @@ WBBLANG['en'] = CURLANG = {
 	modal_video_text: "Enter the URL of the video",
 	modal_video_infoTextUpperInput: "Only single videos on supported platforms can be integrated. Playlists, streams or other pages are not supported",
 	modal_video_infoTextUnderInput: "<span>Please use the embed code, not the share link.<br>Supported platforms:</span><span><ul><li>Youtube</li><li>Vimeo</li></ul></span>",
-	
+
 	modal_map_text: "Enter the embed code of the map",
 	modal_map_infoTextUpperInput: "",
 	modal_map_infoTextUnderInput: "<span>Please use the embed code, not the share link.<br>Supported platforms:</span><span><ul><li>Google Maps / Google My Maps</li><li>OpenStreetmaps</li></ul></span>",
-	
-	
+
+
 	close: "Close",
 	save: "Save",
 	cancel: "Cancel",
@@ -203,16 +203,20 @@ wbbdebug=false;
 							}
 						],
 						onSubmit: function(cmd,opt,queryState) {
-							var input_isNewTab = this.$modal.find('input[name="ISNEWTAB"]');
-							var newValue = input_isNewTab.is(":checked")?'-nt':'';
-							input_isNewTab.val(newValue);
-						},
+                            var inputSeltext = this.$modal.find('input[name="SELTEXT"]');
+                            var inputUrl = this.$modal.find('input[name="URL"]');
+                            var inputIsnewtab = this.$modal.find('input[name="ISNEWTAB"]');
+
+                            if (inputSeltext.val() === '' && inputUrl.val() !== '') {
+                                inputSeltext.val(inputUrl.val());
+                            }
+
+							inputIsnewtab.val(inputIsnewtab.is(":checked")? 'nt' : '');
+						}
 					},
 					transform : {
-						'<a href="{URL}" newtab="">{URL}</a>':"[url]{URL}[/url]",
-						'<a href="{URL}" newtab="">{SELTEXT}</a>':"[url={URL}]{SELTEXT}[/url]",
-						'<a href="{URL}" newtab="{ISNEWTAB}">{SELTEXT}</a>':"[url{ISNEWTAB}={URL}]{SELTEXT}[/url]",
-						'<a href="{URL}" newtab="{ISNEWTAB}">{URL}</a>':"[url{ISNEWTAB}]{URL}[/url]",
+						'<a href="{URL}" data-newtab="">{SELTEXT}</a>':"[url={URL}]{SELTEXT}[/url]",
+						'<a href="{URL}" data-newtab="{ISNEWTAB}">{SELTEXT}</a>':"[url{ISNEWTAB}={URL}]{SELTEXT}[/urlnt]"
 					}
 				},
 				img : {
@@ -380,7 +384,7 @@ wbbdebug=false;
 									{
 										param: "LINK",
 										title:CURLANG.modal_social_text,
-										upperText: CURLANG.modal_social_infoTextUpperInput, 
+										upperText: CURLANG.modal_social_infoTextUpperInput,
 										underText: CURLANG.modal_social_infoTextUnderInput,
 									}
 								]
@@ -394,8 +398,8 @@ wbbdebug=false;
 							}
 							// variable name used in "insertAtCursor()" are keys. So there is a different variable per social media. Like this Wysibb will know which transform translation to use.
 							var flag_error = true;
-							
-							
+
+
 							// if the url match one of the following regex, then this is a valid url
 							//Facebook
 							if(		url.match(/http(s){0,1}:\/\/(.*)facebook\.com\/(.*)\/posts\/(.*)/)		!== null
@@ -408,11 +412,11 @@ wbbdebug=false;
 	                            ||	url.match(/http(s){0,1}:\/\/(.*)facebook\.com\/notes\/(.*)/)			!== null
 	                            ||	url.match(/http(s){0,1}:\/\/(.*)facebook\.com\/(.*)\/videos\/(.*)/)		!== null
 	                            ||	url.match(/http(s){0,1}:\/\/(.*)facebook\.com\/video\.php(.*)/)			!== null) {
-									
+
 									this.insertAtCursor(this.getCodeByCommand(cmd,{facebookLink:url}));
 									flag_error=false;
 							}
-							
+
 							//Instagram
 							if (	url.match(/http(s){0,1}:\/\/(.*)instagram\.com\/p\//)	!== null
 								||	url.match(/http(s){0,1}:\/\/(.*)instagr\.am\/p\//)		!== null) {
@@ -420,43 +424,43 @@ wbbdebug=false;
 									this.insertAtCursor(this.getCodeByCommand(cmd,{instagramLink:url}));
 									flag_error=false;
 							}
-							
+
 							//Twitter
 							if (url.match(/http(s){0,1}:\/\/(.*)twitter\.com\//) !== null) {
 								this.insertAtCursor(this.getCodeByCommand(cmd,{twitterLink:url}));
 								flag_error=false;
 							}
-							
+
 							//Tumblr
 							if (url.match(/http(s){0,1}:\/\/(.+)\.tumblr\.com\/post/) !== null) {
 									this.insertAtCursor(this.getCodeByCommand(cmd,{tumblrLink:url}));
 									flag_error=false;
 							}
-							
+
 							//Google+
 							if (url.match(/http(s){0,1}:\/\/plus\.google\.com\/(.*)\/posts\/(.*)/) !== null) {
 									this.insertAtCursor(this.getCodeByCommand(cmd,{googleplusLink:url}));
 									flag_error=false;
 							}
-								
+
 
 							if(flag_error == true){
 								//show a different error message if the link aren't "embedable"
 								if( 	url.indexOf("facebook")!=-1
-									||	url.indexOf("facebook")!=-1	
+									||	url.indexOf("facebook")!=-1
 									||	url.indexOf("instagram")!=-1
-									||	url.indexOf("twitter")!=-1	
-									||	url.indexOf("tumblr")!=-1	
+									||	url.indexOf("twitter")!=-1
+									||	url.indexOf("tumblr")!=-1
 									||	url.indexOf("plus.google")!=-1){
 									this.error(CURLANG.modal_error_not_embedable);
-									
+
 								} else {
 									this.error(CURLANG.modal_error_url);
 								}
 							}else{
 								this.closeModal();
 							}
-							
+
 							this.updateUI();
 							return false;
 						}
@@ -483,7 +487,7 @@ wbbdebug=false;
 									{
 										param: "SRC",
 										title:CURLANG.modal_video_text,
-										upperText: CURLANG.modal_video_infoTextUpperInput, 
+										upperText: CURLANG.modal_video_infoTextUpperInput,
 										underText: CURLANG.modal_video_infoTextUnderInput,
 									}
 								]
@@ -491,7 +495,7 @@ wbbdebug=false;
 						],
 						// video link submited, parse the src_url and video_id to an iframe or BBcode
 						onSubmit: function(cmd,opt,queryState) {
-							
+
 							var url = this.$modal.find('input[name="SRC"]').val();
 							if (url) {
 								url = url.replace(/^\s+/,"").replace(/\s+$/,"");
@@ -514,9 +518,9 @@ wbbdebug=false;
 							}else{
 								videoId = null;
 							}
-							
+
 							if (host != null && videoId != null && videoId[1] != null) {
-								// three differents variable so Wysibb can distinguish which src will be transform into which hostlink (variable name are the keys) 
+								// three differents variable so Wysibb can distinguish which src will be transform into which hostlink (variable name are the keys)
 								if(host == "youtube"){
 									this.insertAtCursor(this.getCodeByCommand(cmd,{youtubeid:videoId[1]}));
 								}
@@ -530,12 +534,12 @@ wbbdebug=false;
 							}else{
 								this.error(CURLANG.modal_error_url);
 							}
-							
+
 							this.updateUI();
 							return false;
 						},
 					},
-					transform: 
+					transform:
 					{
 						'<iframe src="//www.youtube.com/embed/{YOUTUBEID}" 	width="640" height="360" frameborder="0"></iframe>':'[video]https://www.youtube.com/watch?v={youtubeid}[/video]',
 						'<iframe src="//player.vimeo.com/video/{VIMEOID}" 	width="640" height="360" frameborder="0"></iframe>':'[video]https://vimeo.com/{VIMEOID}[/video]',
@@ -553,8 +557,8 @@ wbbdebug=false;
 								title: CURLANG.map,
 								input: [
 									{	param: "SRC",
-										title: CURLANG.modal_map_text, 
-										upperText: CURLANG.modal_map_infoTextUpperInput, 
+										title: CURLANG.modal_map_text,
+										upperText: CURLANG.modal_map_infoTextUpperInput,
 										underText: CURLANG.modal_map_infoTextUnderInput,
 									}
 								],
@@ -562,7 +566,7 @@ wbbdebug=false;
 						],
 						// maps link submited, parse the url and  to an iframe or BBcode
 						onSubmit: function(cmd,opt,queryState) {
-							
+
 							var url = this.$modal.find('input[name="SRC"]').val();
 							if (url) {
 								url = url.replace(/^\s+/,"").replace(/\s+$/,"");
@@ -583,14 +587,14 @@ wbbdebug=false;
 							}else{
 								mapLink = null;
 							}
-							
-							if (mapLink != null && mapLink[1] != null) {								
+
+							if (mapLink != null && mapLink[1] != null) {
 								this.insertAtCursor(this.getCodeByCommand(cmd,{maplink:mapLink[1]}));
 								this.closeModal();
 							}else{
-								// Show another error message when the user paste a good map URL but not an "embedable" map URL 
+								// Show another error message when the user paste a good map URL but not an "embedable" map URL
 								if( 	url.match(/google\..{2,3}\/maps\/place/i)	!= null
-										||	url.indexOf("goo.gl/maps")				!=-1	
+										||	url.indexOf("goo.gl/maps")				!=-1
 										||	url.indexOf("openstreetmap.org/#map")	!=-1
 										||	url.indexOf("osm.org/go")				!=-1){
 										this.error(CURLANG.modal_error_map);
@@ -598,12 +602,12 @@ wbbdebug=false;
 										this.error(CURLANG.modal_error_url);
 									}
 							}
-							
+
 							this.updateUI();
 							return false;
 						},
 					},
-					transform: 
+					transform:
 					{
 						'<div class="callout small text-center map" onclick="window.open(\'{MAPLINK}\');"><span class="fa-stack fa-lg"><i class="fa fa-square-o fa-stack-2x"></i><i class="fa fa-map fa-stack-1x"></i></span></div>':'[map]{MAPLINK}[/map]',
 					}
@@ -728,7 +732,7 @@ wbbdebug=false;
 			if (this.options.onlyBBmode===true) {this.options.bbmode=true;}
 			//create array of controls, for queryState
 			this.controllers = [];
-			
+
 			//convert button string to array
 			this.options.buttons = this.options.buttons.toLowerCase();
 			this.options.buttons = this.options.buttons.split(",");
@@ -1071,7 +1075,7 @@ wbbdebug=false;
 						// Mantis #7904 - jump on paste
 						var window_scrollY = window.pageYOffset;
 						// to be continued... #7904
-						
+
 						this.saveRange();
 						this.$pasteBlock = $(this.elFromString('<div style="opacity:0;" contenteditable="true">\uFEFF</div>'));
 						var pastedData = (e.originalEvent.clipboardData || window.clipboardData).getData('Text');
@@ -1092,18 +1096,18 @@ wbbdebug=false;
 								rdata = rdata.replace(/\t/g,'<span class="wbbtab"></span>');
 								this.insertAtCursor(rdata,false);
 
-								//#7904 - jump on paste, set focus on cursor in wysibb editor								
+								//#7904 - jump on paste, set focus on cursor in wysibb editor
 								var range = this.lastRange;// last range was set in this.saveRange()
 						        range.collapse(false);// set the cursor position at end of the range (false=end, true=start)
 						        var selection = window.getSelection(); // get the selection within the range
 						        selection.removeAllRanges();//remove any range already made
 						        selection.addRange(range);//set the scroll focus on the cursor positions
-						        
+
 						        // reset windows scroll
 								window.scrollTo(0, window_scrollY); // Chrome
 								window.scroll(0, window_scrollY); // IE & Firefox
 								//end #7904
-								
+
 								this.lastRange=false;
 								this.$pasteBlock=false;
 							}

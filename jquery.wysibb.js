@@ -110,6 +110,7 @@ wbbdebug=false;
 		this.options = {
 			bbmode:				false,
 			onlyBBmode:			false,
+			minheight:			150,
 			themeName:			"default",
 			bodyClass:			"",
 			lang:				"ru",

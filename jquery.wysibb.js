@@ -198,7 +198,7 @@ wbbdebug=false;
 							{
 								input: [
 									{param: "SELTEXT",title:CURLANG.modal_link_text},
-									{param: "URL",title:CURLANG.modal_link_url,validation: '^http(s)?://'},
+									{param: "URL",title:CURLANG.modal_link_url,validation: '^http(s)?://|^mailto:'},
 									{param: "ISNEWTAB",title:CURLANG.modal_link_newtab, type: "checkbox"},
 								]
 							}

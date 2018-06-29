@@ -37,16 +37,9 @@ WBBLANG['de'] = {
 	modal_social_infoTextUpperInput: "Es können nur einzelne Beiträge der jeweiligen Plattformen eingebunden werden, nicht jedoch Übersichtsseiten.",
 	modal_social_infoTextUnderInput: "<span>Unterstützte Plattformen:</span><span><ul><li>Facebook</li><li>Instagram</li><li>Twitter</li></ul></span>",
 	
-	
-	modal_link_title: "Link einf\u00fcgen",
-	modal_link_newtab: "Link in neuem Fenster \xf6ffnen",
-	modal_link_text: "Text",
-	modal_link_url: "URL",
 	modal_email_text: "Display E-Mail",
 	modal_email_url: "E-Mail",
-	modal_link_tab1: "Insert URL",
-	
-	modal_error_url: "Ungultige URL",
+
 	modal_error_not_embedable: "URL nicht einbettbar. Der Eintrag wird nur verlinkt",
 	modal_error_map: "URLs nicht einbettbar. Der Eintrag wird nur verlinkt. Bitte verwenden Sie den Einbettcode",
 	

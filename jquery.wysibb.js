@@ -40,16 +40,9 @@ WBBLANG['en'] = CURLANG = {
 	modal_social_infoTextUpperInput: "Only single posts of supported platforms can be integrated. Profiles and pages are not supported.",
 	modal_social_infoTextUnderInput: "<span>Supported platforms:</span><span><ul><li>Facebook</li><li>Instagram</li><li>Twitter</li></ul></span>",
 
-	modal_link_title: "Insert link",
-	modal_link_newtab: "Open link in a new tab",
-	modal_link_text: "Display text",
-	modal_link_url: "URL",
-
 	modal_email_text: "Display email",
 	modal_email_url: "Email",
-	modal_link_tab1: "Insert URL",
 
-	modal_error_url: "Invalid URL",
 	modal_error_not_embedable: "This URL can not be embedded. Only the link will be displayed.",
 	modal_error_map: "This URL can not be embedded. Only a link will be displayed. Please use the embed code.",
 
@@ -185,39 +178,6 @@ wbbdebug=false;
 					excmd: 'subscript',
 					transform : {
 						'<sub>{SELTEXT}</sub>':"[sub]{SELTEXT}[/sub]"
-					}
-				},
-				link : {
-					title: CURLANG.link,
-					buttonHTML: '<span class="fonticon ve-tlb-link1">\uE007</span>',
-					hotkey: 'ctrl+shift+2',
-					modal: {
-						title: CURLANG.modal_link_title,
-						width: "500px",
-						tabs: [
-							{
-								input: [
-									{param: "SELTEXT",title:CURLANG.modal_link_text},
-									{param: "URL",title:CURLANG.modal_link_url,validation: '^http(s)?://|^mailto:'},
-									{param: "ISNEWTAB",title:CURLANG.modal_link_newtab, type: "checkbox"},
-								]
-							}
-						],
-						onSubmit: function(cmd,opt,queryState) {
-                            var inputSeltext = this.$modal.find('input[name="SELTEXT"]');
-                            var inputUrl = this.$modal.find('input[name="URL"]');
-                            var inputIsnewtab = this.$modal.find('input[name="ISNEWTAB"]');
-
-                            if (inputSeltext.val() === '' && inputUrl.val() !== '') {
-                                inputSeltext.val(inputUrl.val());
-                            }
-
-							inputIsnewtab.val(inputIsnewtab.is(":checked")? 'nt' : '');
-						}
-					},
-					transform : {
-						'<a href="{URL}" data-newtab="">{SELTEXT}</a>':"[url={URL}]{SELTEXT}[/url]",
-						'<a href="{URL}" data-newtab="{ISNEWTAB}">{SELTEXT}</a>':"[url{ISNEWTAB}={URL}]{SELTEXT}[/urlnt]"
 					}
 				},
 				img : {

@@ -41,7 +41,6 @@ WBBLANG['en'] = CURLANG = {
 	modal_social_infoTextUnderInput: "<span>Supported platforms:</span><span><ul><li>Facebook</li><li>Instagram</li><li>Twitter</li></ul></span>",
 
 	modal_link_title: "Insert link",
-	modal_link_newtab: "Open link in a new tab",
 	modal_link_text: "Display text",
 	modal_link_url: "URL",
 
@@ -197,27 +196,15 @@ wbbdebug=false;
 						tabs: [
 							{
 								input: [
-									{param: "SELTEXT",title:CURLANG.modal_link_text},
-									{param: "URL",title:CURLANG.modal_link_url,validation: '^http(s)?://|^mailto:'},
-									{param: "ISNEWTAB",title:CURLANG.modal_link_newtab, type: "checkbox"},
+									{param: "SELTEXT",title:CURLANG.modal_link_text, type: "div"},
+									{param: "URL",title:CURLANG.modal_link_url,validation: '^http(s)?://|^mailto:'}
 								]
 							}
-						],
-						onSubmit: function(cmd,opt,queryState) {
-                            var inputSeltext = this.$modal.find('input[name="SELTEXT"]');
-                            var inputUrl = this.$modal.find('input[name="URL"]');
-                            var inputIsnewtab = this.$modal.find('input[name="ISNEWTAB"]');
-
-                            if (inputSeltext.val() === '' && inputUrl.val() !== '') {
-                                inputSeltext.val(inputUrl.val());
-                            }
-
-							inputIsnewtab.val(inputIsnewtab.is(":checked")? 'nt' : '');
-						}
+						]
 					},
 					transform : {
-						'<a href="{URL}" data-newtab="">{SELTEXT}</a>':"[url={URL}]{SELTEXT}[/url]",
-						'<a href="{URL}" data-newtab="{ISNEWTAB}">{SELTEXT}</a>':"[url{ISNEWTAB}={URL}]{SELTEXT}[/urlnt]"
+						'<a href="{URL}">{SELTEXT}</a>':"[url={URL}]{SELTEXT}[/url]",
+						'<a href="{URL}">{URL}</a>':"[url]{URL}[/url]"
 					}
 				},
 				img : {

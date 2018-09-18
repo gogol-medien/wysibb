@@ -34,12 +34,6 @@ WBBLANG['en'] = CURLANG = {
 	map: "Insert map link",
 	removeFormat:"Remove Format",
 
-
-	modal_social_title: "Insert social media link",
-	modal_social_text: "Please use the embed code, not the share link.",
-	modal_social_infoTextUpperInput: "Only single posts of supported platforms can be integrated. Profiles and pages are not supported.",
-	modal_social_infoTextUnderInput: "<span>Supported platforms:</span><span><ul><li>Facebook</li><li>Instagram</li><li>Twitter</li></ul></span>",
-
 	modal_link_title: "Insert link",
 	modal_link_text: "Display text",
 	modal_link_url: "URL",
@@ -47,10 +41,6 @@ WBBLANG['en'] = CURLANG = {
 	modal_email_text: "Display email",
 	modal_email_url: "Email",
 	modal_link_tab1: "Insert URL",
-
-	modal_error_url: "Invalid URL",
-	modal_error_not_embedable: "This URL can not be embedded. Only the link will be displayed.",
-	modal_error_map: "This URL can not be embedded. Only a link will be displayed. Please use the embed code.",
 
 	modal_img_title: "Insert image",
 	modal_img_tab1: "Insert URL",
@@ -60,13 +50,6 @@ WBBLANG['en'] = CURLANG = {
 	add_attach: "Add Attachment",
 
 	modal_video_text: "Enter the URL of the video",
-	modal_video_infoTextUpperInput: "Only single videos on supported platforms can be integrated. Playlists, streams or other pages are not supported",
-	modal_video_infoTextUnderInput: "<span>Please use the embed code, not the share link.<br>Supported platforms:</span><span><ul><li>Youtube</li><li>Vimeo</li></ul></span>",
-
-	modal_map_text: "Enter the embed code of the map",
-	modal_map_infoTextUpperInput: "",
-	modal_map_infoTextUnderInput: "<span>Please use the embed code, not the share link.<br>Supported platforms:</span><span><ul><li>Google Maps / Google My Maps</li><li>OpenStreetmaps</li></ul></span>",
-
 
 	close: "Close",
 	save: "Save",
@@ -359,247 +342,44 @@ wbbdebug=false;
 						'<p style="text-align:center">{SELTEXT}</p>': '[center]{SELTEXT}[/center]'
 					}
 				},
-				socialembed: {
-					title: CURLANG.modal_social_title,
-					buttonHTML: '<div style="padding:6px;"><span aria-hidden="true" class="fab fa-facebook fa-lg fa-fw"></span></div>',
-					modal: {
-						title: CURLANG.modal_social_title,
-						width: "600px",
-						tabs: [
-							{
-								title: CURLANG.modal_social_title,
-								input: [
-									{
-										param: "LINK",
-										title:CURLANG.modal_social_text,
-										upperText: CURLANG.modal_social_infoTextUpperInput,
-										underText: CURLANG.modal_social_infoTextUnderInput,
-									}
-								]
-							}
-						],
-						// Social media link submited, verify which social media is use and parse the url
-						onSubmit: function(cmd,opt,queryState) {
-							var url = this.$modal.find('input[name="LINK"]').val();
-							if (url) {
-								url = url.replace(/^\s+/,"").replace(/\s+$/,"");
-							}
-							// variable name used in "insertAtCursor()" are keys. So there is a different variable per social media. Like this Wysibb will know which transform translation to use.
-							var flag_error = true;
-
-
-							// if the url match one of the following regex, then this is a valid url
-							//Facebook
-							if(		url.match(/http(s){0,1}:\/\/(.*)facebook\.com\/(.*)\/posts\/(.*)/)		!== null
-	                            ||	url.match(/http(s){0,1}:\/\/(.*)facebook\.com\/(.*)\/activity\/(.*)/)	!== null
-	                            ||	url.match(/http(s){0,1}:\/\/(.*)facebook\.com\/(.*)\/photos\/(.*)/)		!== null
-	                            ||	url.match(/http(s){0,1}:\/\/(.*)facebook\.com\/photo(s\/|\.php)(.*)/)	!== null
-	                            ||	url.match(/http(s){0,1}:\/\/(.*)facebook\.com\/permalink\.php(.*)/)		!== null
-	                            ||	url.match(/http(s){0,1}:\/\/(.*)facebook\.com\/media\/(.*)/) 			!== null
-	                            ||	url.match(/http(s){0,1}:\/\/(.*)facebook\.com\/questions\/(.*)/) 		!== null
-	                            ||	url.match(/http(s){0,1}:\/\/(.*)facebook\.com\/notes\/(.*)/)			!== null
-	                            ||	url.match(/http(s){0,1}:\/\/(.*)facebook\.com\/(.*)\/videos\/(.*)/)		!== null
-	                            ||	url.match(/http(s){0,1}:\/\/(.*)facebook\.com\/video\.php(.*)/)			!== null) {
-
-									this.insertAtCursor(this.getCodeByCommand(cmd,{facebookLink:url}));
-									flag_error=false;
-							}
-
-							//Instagram
-							if (	url.match(/http(s){0,1}:\/\/(.*)instagram\.com\/p\//)	!== null
-								||	url.match(/http(s){0,1}:\/\/(.*)instagr\.am\/p\//)		!== null) {
-
-									this.insertAtCursor(this.getCodeByCommand(cmd,{instagramLink:url}));
-									flag_error=false;
-							}
-
-							//Twitter
-							if (url.match(/http(s){0,1}:\/\/(.*)twitter\.com\//) !== null) {
-								this.insertAtCursor(this.getCodeByCommand(cmd,{twitterLink:url}));
-								flag_error=false;
-							}
-
-							//Tumblr
-							if (url.match(/http(s){0,1}:\/\/(.+)\.tumblr\.com\/post/) !== null) {
-									this.insertAtCursor(this.getCodeByCommand(cmd,{tumblrLink:url}));
-									flag_error=false;
-							}
-
-							//Google+
-							if (url.match(/http(s){0,1}:\/\/plus\.google\.com\/(.*)\/posts\/(.*)/) !== null) {
-									this.insertAtCursor(this.getCodeByCommand(cmd,{googleplusLink:url}));
-									flag_error=false;
-							}
-
-
-							if(flag_error == true){
-								//show a different error message if the link aren't "embedable"
-								if( 	url.indexOf("facebook")!=-1
-									||	url.indexOf("facebook")!=-1
-									||	url.indexOf("instagram")!=-1
-									||	url.indexOf("twitter")!=-1
-									||	url.indexOf("tumblr")!=-1
-									||	url.indexOf("plus.google")!=-1){
-									this.error(CURLANG.modal_error_not_embedable);
-
-								} else {
-									this.error(CURLANG.modal_error_url);
-								}
-							}else{
-								this.closeModal();
-							}
-
-							this.updateUI();
-							return false;
-						}
-					},
-					transform:
-					{
-						'<div class="callout small text-center facebook" onclick="window.open(\'{FACEBOOKLINK}\');"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i class="fab fa-facebook fa-stack-1x"></i></span></div>':'[facebook]{FACEBOOKLINK}[/facebook]',
-						'<div class="callout small text-center instagram" onclick="window.open(\'{INSTAGRAMLINK}\');"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i class="fab fa-instagram fa-stack-1x"></i></span></div>':'[instagram]{INSTAGRAMLINK}[/instagram]',
-						'<div class="callout small text-center twitter" onclick="window.open(\'{TWITTERLINK}\');"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i class="fab fa-twitter fa-stack-1x"></i></span></div>':'[twitter]{TWITTERLINK}[/twitter]',
-						'<div class="callout small text-center tumblr" onclick="window.open(\'{TUMBLRLINK}\');"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i class="fab fa-tumblr fa-stack-1x"></i></span></div>':'[tumblr]{TUMBLRLINK}[/tumblr]',
-						'<div class="callout small text-center googleplus" onclick="window.open(\'{GOOGLEPLUSLINK}\');"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i class="fab fa-google-plus fa-stack-1x"></i></span></div>':'[googleplus]{GOOGLEPLUSLINK}[/googleplus]',
-					}
-				},
-				video: {
-					title: CURLANG.video,
-					buttonHTML: '<span class="fonticon ve-tlb-video1">\uE008</span>',
-					modal: {
-						title: CURLANG.video,
-						width: "600px",
-						tabs: [
-							{
-								title: CURLANG.video,
-								input: [
-									{
-										param: "SRC",
-										title:CURLANG.modal_video_text,
-										upperText: CURLANG.modal_video_infoTextUpperInput,
-										underText: CURLANG.modal_video_infoTextUnderInput,
-									}
-								]
-							}
-						],
-						// video link submited, parse the src_url and video_id to an iframe or BBcode
-						onSubmit: function(cmd,opt,queryState) {
-
-							var url = this.$modal.find('input[name="SRC"]').val();
-							if (url) {
-								url = url.replace(/^\s+/,"").replace(/\s+$/,"");
-							}
-							var videoId;
-							var host = null;
-							if (url.indexOf("youtu.be")!=-1) {
-								videoId = url.match(/^http[s]*:\/\/youtu\.be\/([a-z0-9_-]+)/i);
-								host = "youtube";
-							}else if (url.indexOf("youtube")!=-1) {
-								videoId = url.match(/^http[s]*:\/\/www\.youtube\.com\/watch\?.*?v=([a-z0-9_-]+)/i);
-								host = "youtube";
-							}else if (url.indexOf("apa.at/embed")!=-1) {
-								videoId = url.match(/^http[s]*:\/\/(uvp.+apa\.at)\/embed\/([a-z0-9_-]+)/i);
-								host = "apa";
-							}
-							else if (url.indexOf("vimeo.com")!=-1) {
-								videoId = url.match(/^http[s]*:\/\/vimeo\.com\/([a-z0-9_-]+)/i);
-								host = "vimeo";
-							}else{
-								videoId = null;
-							}
-
-							if (host != null && videoId != null && videoId[1] != null) {
-								// three differents variable so Wysibb can distinguish which src will be transform into which hostlink (variable name are the keys)
-								if(host == "youtube"){
-									this.insertAtCursor(this.getCodeByCommand(cmd,{youtubeid:videoId[1]}));
-								}
-								else if(host == "apa"){
-									this.insertAtCursor(this.getCodeByCommand(cmd,{host:videoId[1],apaid:videoId[2]}));
-								}
-								else if(host == "vimeo"){
-									this.insertAtCursor(this.getCodeByCommand(cmd,{vimeoid:videoId[1]}));
-								}
-								this.closeModal();
-							}else{
-								this.error(CURLANG.modal_error_url);
-							}
-
-							this.updateUI();
-							return false;
-						},
-					},
-					transform:
-					{
-						'<iframe src="//www.youtube.com/embed/{YOUTUBEID}" 	width="640" height="360" frameborder="0"></iframe>':'[video]https://www.youtube.com/watch?v={youtubeid}[/video]',
-						'<iframe src="//player.vimeo.com/video/{VIMEOID}" 	width="640" height="360" frameborder="0"></iframe>':'[video]https://vimeo.com/{VIMEOID}[/video]',
-						'<iframe src="//{HOST}/embed/{APAID}" 			width="640" height="360" frameborder="0"></iframe>':'[video]http://{HOST}/embed/{APAID}[/video]'
-					}
-				},
-				map: {
-					title: CURLANG.map,
-					buttonHTML: '<div style="padding:6px;"><span aria-hidden="true" class="fa fa-map-marker-alt fa-lg fa-fw"></span></div>',
-					modal: {
-						title: CURLANG.map,
-						width: "600px",
-						tabs: [
-							{
-								title: CURLANG.map,
-								input: [
-									{	param: "SRC",
-										title: CURLANG.modal_map_text,
-										upperText: CURLANG.modal_map_infoTextUpperInput,
-										underText: CURLANG.modal_map_infoTextUnderInput,
-									}
-								],
-							}
-						],
-						// maps link submited, parse the url and  to an iframe or BBcode
-						onSubmit: function(cmd,opt,queryState) {
-
-							var url = this.$modal.find('input[name="SRC"]').val();
-							if (url) {
-								url = url.replace(/^\s+/,"").replace(/\s+$/,"");
-							}
-							var mapLink = null;
-							var host = null;
-							if (url.indexOf("google.com/maps/")!=-1){
-								if(url.indexOf("iframe")!=-1){
-									url = url.match(/src="(.*?)"/i)[1];
-								}
-								mapLink = url.match(/(^http[s]*:\/\/www\.google\..{2,3}\/maps\/(?:.\/)?embed\?.+)/i);
-							}else if (url.indexOf("openstreetmap.org")!=-1) {
-								if(url.indexOf("iframe")!=-1){
-									url = url.match(/src="(.*?)"/i)[1];
-								}
-								mapLink = url.match(/(^http[s]*:\/\/www\.openstreetmap\.org\/export\/embed.html.+)/i);
-
-							}else{
-								mapLink = null;
-							}
-
-							if (mapLink != null && mapLink[1] != null) {
-								this.insertAtCursor(this.getCodeByCommand(cmd,{maplink:mapLink[1]}));
-								this.closeModal();
-							}else{
-								// Show another error message when the user paste a good map URL but not an "embedable" map URL
-								if( 	url.match(/google\..{2,3}\/maps\/place/i)	!= null
-										||	url.indexOf("goo.gl/maps")				!=-1
-										||	url.indexOf("openstreetmap.org/#map")	!=-1
-										||	url.indexOf("osm.org/go")				!=-1){
-										this.error(CURLANG.modal_error_map);
-									} else {
-										this.error(CURLANG.modal_error_url);
-									}
-							}
-
-							this.updateUI();
-							return false;
-						},
-					},
-					transform:
-					{
-						'<div class="callout small text-center map" onclick="window.open(\'{MAPLINK}\');"><span class="fa-stack fa-lg"><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-map fa-stack-1x"></i></span></div>':'[map]{MAPLINK}[/map]',
-					}
-				},
+                video: {
+                    title: CURLANG.video,
+                    buttonHTML: '<span class="fonticon ve-tlb-video1">\uE008</span>',
+                    modal: {
+                        title: CURLANG.video,
+                        width: "600px",
+                        tabs: [
+                            {
+                                title: CURLANG.video,
+                                input: [
+                                    {param: "SRC",title:CURLANG.modal_video_text}
+                                ]
+                            }
+                        ],
+                        onSubmit: function(cmd,opt,queryState) {
+                            var url = this.$modal.find('input[name="SRC"]').val();
+                            if (url) {
+                                url = url.replace(/^\s+/,"").replace(/\s+$/,"");
+                            }
+                            var a;
+                            if (url.indexOf("youtu.be")!=-1) {
+                                a = url.match(/^http[s]*:\/\/youtu\.be\/([a-z0-9_-]+)/i);
+                            }else{
+                                a = url.match(/^http[s]*:\/\/www\.youtube\.com\/watch\?.*?v=([a-z0-9_-]+)/i);
+                            }
+                            if (a && a.length==2) {
+                                var code = a[1];
+                                this.insertAtCursor(this.getCodeByCommand(cmd,{src:code}));
+                            }
+                            this.closeModal();
+                            this.updateUI();
+                            return false;
+                        }
+                    },
+                    transform: {
+                        '<iframe src="http://www.youtube.com/embed/{SRC}" width="640" height="480" frameborder="0"></iframe>':'[video]{SRC}[/video]'
+                    }
+                },
 
 				//select options
 				fs_verysmall: {
@@ -1239,7 +1019,7 @@ wbbdebug=false;
 			$btn.mousedown($.proxy(function(e) {
 				e.preventDefault();
 				this.execCommand(bn,opt.exvalue || false);
-				$(e.currentTarget).trigger('queryState');
+				// $(e.currentTarget).trigger('queryState');
 			},this));
 		},
 		buildColorpicker: function(container,bn,opt) {
@@ -1447,7 +1227,7 @@ wbbdebug=false;
 		updateUI: function(e) {
 			if (!e || ((e.which>=8 && e.which<=46) || e.which>90 || e.type=="mouseup")) {
 				$.each(this.controllers,$.proxy(function(i,$btn) {
-					$btn.trigger('queryState');
+					// $btn.trigger('queryState');
 				},this));
 			}
 
@@ -2072,9 +1852,9 @@ wbbdebug=false;
 					this.$txtArea.focus();
 				}
 			}else{
-				if (!this.$body.is(":focus")) {
-					this.$body.focus();
-				}
+				// if (!this.$body.is(":focus")) {
+				// 	this.$body.focus();
+				// }
 			}
 		},
 		clearLastRange: function() {

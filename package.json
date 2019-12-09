@@ -1,0 +1,16 @@
+{
+    "name": "wysibb",
+    "version": "1.8.1",
+    "authors": [
+        "Vadim Dobroskok",
+        "Sascha Haberkorn <coff33cat@gmail.com>",
+        "Rafael Schmitt <rafael.schmitt@gogol-medien.de>",
+        "Mikaël Perez-Delacour <mikael.perez-delacour@gogol-medien.de>",
+        "Dominik Mähl <dominik.maehl@gogol-medien.de>"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/gogol-medien/wysibb.git"
+    }
+  }
+  

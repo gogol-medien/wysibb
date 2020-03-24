@@ -11,5 +11,6 @@
     "repository": {
         "type": "git",
         "url": "git://github.com/gogol-medien/wysibb.git"
-    }
+    },
+    "main": "jquery.wysibb.js"
   }

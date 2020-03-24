@@ -1,6 +1,6 @@
 {
     "name": "wysibb",
-    "version": "1.8.1",
+    "version": "1.9.0",
     "authors": [
         "Vadim Dobroskok",
         "Sascha Haberkorn <coff33cat@gmail.com>",
@@ -13,4 +13,3 @@
         "url": "git://github.com/gogol-medien/wysibb.git"
     }
   }
-  

@@ -4,3 +4,6 @@
 /nbproject/project.properties
 /nbproject/project.xml
 .project
+.DS_Store
+._*
+

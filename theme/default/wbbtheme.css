@@ -50,6 +50,9 @@ html{height:100% !important;}
   padding:0;
   border-right:1px solid #ccc;
 }
+.wysibb .wysibb-scrollbar {
+  display:none;
+}
 .wysibb .wysibb-text{
   margin:0 0 0 70px;
 }

@@ -963,7 +963,8 @@ wbbdebug=false;
 			if (this.options.toolbar === false) {return false;}
 
 			//this.$toolbar = $('<div class="wysibb-toolbar">').prependTo(this.$editor);
-			this.$toolbar = $('<div>').addClass("wysibb-toolbar").prependTo(this.$editor);
+            $('<div>').addClass("wysibb-scrollable-content-icon").prependTo(this.$editor);
+            this.$toolbar = $('<div>').addClass("wysibb-toolbar").prependTo(this.$editor);
 
 			var $btnContainer;
 			$.each(this.options.buttons,$.proxy(function(i,bn) {
